@@ -4,7 +4,7 @@ import "./App.css";
 export default function App() {
   // Estado para controlar se o utilizador já fez login com sucesso
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
+
   // Estados para os formulários
   const [isLogin, setIsLogin] = useState(true);
   const [name, setName] = useState("");
@@ -12,25 +12,31 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
-  const API_URL = "https://railway.app";
+  const API_URL =
+    "https://user-service-production-3149.up.railway.app";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(""); 
+    setMessage("");
 
-    const endpoint = isLogin ? "/api/users/login" : "/api/users/register";
-    const payload = isLogin 
-      ? { email, password } 
+    const endpoint = isLogin
+      ? "/api/users/login"
+      : "/api/users/register";
+    const payload = isLogin
+      ? { email, password }
       : { name, email, password };
 
     try {
-      const response = await fetch(`${API_URL}${endpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${API_URL}${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         },
-        body: JSON.stringify(payload),
-      });
+      );
 
       const data = await response.json();
 
@@ -46,17 +52,23 @@ export default function App() {
           setPassword("");
         } else {
           // Se for registo, avisa que correu bem e muda para o ecrã de login
-          setMessage("Sucesso: Conta criada! Faça login agora.");
+          setMessage(
+            "Sucesso: Conta criada! Faça login agora.",
+          );
           setIsLogin(true);
           setName("");
           setEmail("");
           setPassword("");
         }
       } else {
-        setMessage(`Erro: ${data.message || "Algo correu mal."}`);
+        setMessage(
+          `Erro: ${data.message || "Algo correu mal."}`,
+        );
       }
     } catch (error) {
-      setMessage("Erro: Não foi possível ligar ao servidor.");
+      setMessage(
+        "Erro: Não foi possível ligar ao servidor.",
+      );
       console.error(error);
     }
   };
@@ -74,8 +86,13 @@ export default function App() {
       <div className="dashboard-container">
         <div className="dashboard-card">
           <h1>🎉 Bem-vindo ao Sistema!</h1>
-          <p>Login efetuado com sucesso na tua aplicação.</p>
-          <button onClick={handleLogout} className="logout-btn">
+          <p>
+            Login efetuado com sucesso na tua aplicação.
+          </p>
+          <button
+            onClick={handleLogout}
+            className="logout-btn"
+          >
             Sair (Logout)
           </button>
         </div>
@@ -87,44 +104,50 @@ export default function App() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>{isLogin ? "Welcome Back" : "Create Account"}</h2>
-        <p className="subtitle">Please enter your details to continue</p>
+        <h2>
+          {isLogin ? "Welcome Back" : "Create Account"}
+        </h2>
+        <p className="subtitle">
+          Please enter your details to continue
+        </p>
 
-        {message && <div className="api-message">{message}</div>}
+        {message && (
+          <div className="api-message">{message}</div>
+        )}
 
         <form onSubmit={handleSubmit}>
           {!isLogin && (
             <div className="input-group">
               <label>Full Name</label>
-              <input 
-                type="text" 
-                placeholder="John Doe" 
+              <input
+                type="text"
+                placeholder="John Doe"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required 
+                required
               />
             </div>
           )}
 
           <div className="input-group">
             <label>Email Address</label>
-            <input 
-              type="email" 
-              placeholder="name@example.com" 
+            <input
+              type="email"
+              placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required 
+              required
             />
           </div>
 
           <div className="input-group">
             <label>Password</label>
-            <input 
-              type="password" 
-              placeholder="••••••••" 
+            <input
+              type="password"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required 
+              required
             />
           </div>
 
@@ -134,7 +157,9 @@ export default function App() {
         </form>
 
         <p className="toggle-text">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+          {isLogin
+            ? "Don't have an account?"
+            : "Already have an account?"}{" "}
           <span onClick={() => setIsLogin(!isLogin)}>
             {isLogin ? "Register here" : "Login here"}
           </span>
