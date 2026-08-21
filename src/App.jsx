@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
+
 import "./App.css";
 
 export default function App() {
@@ -11,6 +13,7 @@ export default function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [userName, setUserName] = useState("");
 
   const API_URL =
     "https://user-service-production-3149.up.railway.app";
@@ -46,6 +49,11 @@ export default function App() {
           if (data.token) {
             localStorage.setItem("userToken", data.token);
           }
+          const decoded = jwtDecode(data.token);
+          console.log("Conteúdo do Token:", decoded);
+          setUserName(
+            decoded.name || decoded.sub || "Utilizador",
+          );
           setIsLoggedIn(true); // 👈 Entra na nova página
           // Limpa os campos do formulário
           setEmail("");
