@@ -1,0 +1,20 @@
+{
+  "welcome": "Bem-vindo,",
+  "logout": "Sair (Logout)",
+  "success_msg": "Login efetuado com sucesso na tua aplicação.",
+
+  "welcome_back": "Bem-vindo de volta",
+  "create_account": "Criar Conta",
+  "enter_details": "Por favor, introduza os seus dados para continuar",
+  "no_account": "Não tem uma conta?",
+  "has_account": "Já tem uma conta?",
+  "register_here": "Registe-se aqui",
+  "login_here": "Inicie sessão aqui",
+
+  "email_label": "Endereço de Email",
+  "password_label": "Palavra-passe",
+  "sign_in_btn": "Iniciar Sessão",
+
+  "full_name_label": "Nome Completo",
+  "sign_up_btn": "Registar"
+}

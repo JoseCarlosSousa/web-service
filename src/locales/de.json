@@ -1,0 +1,21 @@
+{
+  "welcome": "Willkommen,",
+  "logout": "Abmelden (Logout)",
+  "success_msg": "Erfolgreich in Ihrer Anwendung angemeldet.",
+
+  "welcome_back": "Willkommen zurück",
+  "create_account": "Konto erstellen",
+  "enter_details": "Bitte geben Sie Ihre Daten ein, um fortzufahren",
+  "no_account": "Haben Sie noch kein Konto?",
+  "has_account": "Haben Sie bereits ein Konto?",
+  "register_here": "Hier registrieren",
+  "login_here": "Hier einloggen",
+
+  "email_label": "E-Mail-Adresse",
+  "password_label": "Passwort",
+  "sign_in_btn": "Einloggen",
+
+  "full_name_label": "Vollständiger Name",
+  "sign_up_btn": "Registrieren"
+}
+

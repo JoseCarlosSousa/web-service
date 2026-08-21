@@ -1,0 +1,20 @@
+{
+  "welcome": "Welcome,",
+  "logout": "Logout",
+  "success_msg": "Login successfully completed in your application.",
+
+  "welcome_back": "Welcome Back",
+  "create_account": "Create Account",
+  "enter_details": "Please enter your details to continue",
+  "no_account": "Don't have an account?",
+  "has_account": "Already have an account?",
+  "register_here": "Register here",
+  "login_here": "Login here",
+
+  "email_label": "Email Address",
+  "password_label": "Password",
+  "sign_in_btn": "Sign In",
+
+  "full_name_label": "Full Name",
+  "sign_up_btn": "Sign Up"
+}
