@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import LoginCard from "./components/LoginCard";
-import RegisterCard from "./components/RegisterCard";
+import LoginCard from "./LoginCard";
+import RegisterCard from "./RegisterCard";
 
 export default function AuthForm({
   isLogin,
@@ -24,19 +24,90 @@ export default function AuthForm({
   return (
     <div className="auth-container">
       {/* Seletor de Idiomas no topo do Cartão */}
-      <div className="lang-selector" style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "15px" }}>
-        <button onClick={() => alterarIdioma("pt")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: i18n.language === "pt" ? "20px" : "16px" }}>🇵🇹</button>
-        <button onClick={() => alterarIdioma("en")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: i18n.language === "en" ? "20px" : "16px" }}>🇬🇧</button>
-        <button onClick={() => alterarIdioma("de")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: i18n.language === "de" ? "20px" : "16px" }}>🇩🇪</button>
+      {/* Substitua o bloco antigo das bandeiras por este no AuthForm.jsx */}
+      <div
+        className="language-switcher"
+        style={{
+          position: "absolute",
+          top: "20px",
+          right: "20px",
+          display: "flex",
+          gap: "15px",
+          zIndex: 1000,
+        }}
+      >
+        <button
+          onClick={() => i18n.changeLanguage("pt")}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "24px",
+            transition: "transform 0.2s",
+            opacity: i18n.language.startsWith("pt")
+              ? 1
+              : 0.4,
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.transform = "scale(1.2)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.transform = "scale(1)")
+          }
+        >
+          🇵🇹
+        </button>
+        <button
+          onClick={() => i18n.changeLanguage("en")}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "24px",
+            transition: "transform 0.2s",
+            opacity: i18n.language.startsWith("en")
+              ? 1
+              : 0.4,
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.transform = "scale(1.2)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.transform = "scale(1)")
+          }
+        >
+          🇬🇧
+        </button>
+        <button
+          onClick={() => i18n.changeLanguage("de")}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "24px",
+            transition: "transform 0.2s",
+            opacity: i18n.language.startsWith("de")
+              ? 1
+              : 0.4,
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.transform = "scale(1.2)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.transform = "scale(1)")
+          }
+        >
+          🇩🇪
+        </button>
       </div>
 
       <div className="auth-card">
         <h2>
-          {isLogin ? t("welcome_back") : t("create_account")}
+          {isLogin
+            ? t("welcome_back")
+            : t("create_account")}
         </h2>
-        <p className="subtitle">
-          {t("enter_details")}
-        </p>
+        <p className="subtitle">{t("enter_details")}</p>
 
         {message && (
           <div className="api-message">{message}</div>

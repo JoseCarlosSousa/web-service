@@ -2,7 +2,7 @@ import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { loginUser, registerUser } from "./api/authService";
 import DashboardCard from "./components/DashboardCard";
-import AuthForm from "./AuthForm";
+import AuthForm from "./components/AuthForm";
 import "./App.css";
 
 export default function App() {
