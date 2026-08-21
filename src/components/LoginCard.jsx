@@ -1,3 +1,6 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
+
 export default function LoginCard({
   email,
   setEmail,
@@ -5,10 +8,12 @@ export default function LoginCard({
   setPassword,
   onSubmit,
 }) {
+  const { t } = useTranslation();
+
   return (
     <form onSubmit={onSubmit}>
       <div className="input-group">
-        <label>Email Address</label>
+        <label>{t("email_label")}</label>
         <input
           type="email"
           placeholder="name@example.com"
@@ -19,7 +24,7 @@ export default function LoginCard({
       </div>
 
       <div className="input-group">
-        <label>Password</label>
+        <label>{t("password_label")}</label>
         <input
           type="password"
           placeholder="••••••••"
@@ -30,7 +35,7 @@ export default function LoginCard({
       </div>
 
       <button type="submit" className="submit-btn">
-        Sign In
+        {t("sign_in_btn")}
       </button>
     </form>
   );

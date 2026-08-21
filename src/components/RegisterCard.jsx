@@ -1,3 +1,6 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
+
 export default function RegisterCard({
   name,
   setName,
@@ -7,10 +10,12 @@ export default function RegisterCard({
   setPassword,
   onSubmit,
 }) {
+  const { t } = useTranslation();
+
   return (
     <form onSubmit={onSubmit}>
       <div className="input-group">
-        <label>Full Name</label>
+        <label>{t("full_name_label")}</label>
         <input
           type="text"
           placeholder="John Doe"
@@ -21,7 +26,7 @@ export default function RegisterCard({
       </div>
 
       <div className="input-group">
-        <label>Email Address</label>
+        <label>{t("email_label")}</label>
         <input
           type="email"
           placeholder="name@example.com"
@@ -32,7 +37,7 @@ export default function RegisterCard({
       </div>
 
       <div className="input-group">
-        <label>Password</label>
+        <label>{t("password_label")}</label>
         <input
           type="password"
           placeholder="••••••••"
@@ -43,7 +48,7 @@ export default function RegisterCard({
       </div>
 
       <button type="submit" className="submit-btn">
-        Sign Up
+        {t("sign_up_btn")}
       </button>
     </form>
   );
