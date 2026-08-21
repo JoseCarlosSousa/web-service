@@ -89,24 +89,20 @@ export default function App() {
   };
 
   // 1. SE ESTIVER LOGADO: Mostra a nova página com o botão de Logout
-  if (isLoggedIn) {
-    return (
-      <div className="dashboard-container">
-        <div className="dashboard-card">
-          <h1>🎉 Bem-vindo ao Sistema!</h1>
-          <p>
-            Login efetuado com sucesso na tua aplicação.
-          </p>
-          <button
-            onClick={handleLogout}
-            className="logout-btn"
-          >
-            Sair (Logout)
-          </button>
-        </div>
+ if (isLoggedIn) {
+  return (
+    <div className="dashboard-container">
+      <div className="dashboard-card">
+        {/* 👈 ALTERA ESTA LINHA AQUI: */}
+        <h1>🎉 Bem-vindo, {userName}!</h1> 
+        <p>Login efetuado com sucesso na tua aplicação.</p>
+        <button onClick={handleLogout} className="logout-btn">
+          Sair (Logout)
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   // 2. SE NÃO ESTIVER LOGADO: Mostra os formulários de Login/Registo normais
   return (
