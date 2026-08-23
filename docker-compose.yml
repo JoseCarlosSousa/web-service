@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  web-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      # 🌟 ADD THIS BLOCK: Tell the Dockerfile to use the development env file
+      args:
+        - VITE_MODE=development
+    container_name: web-service
+    ports:
+      - "80:8080"
+    restart: always
