@@ -1,5 +1,5 @@
 {
-  "welcome": "Welcome,",
+  "welcome": "Welcome",
   "logout": "Logout",
   "success_msg": "Login successfully completed in your application.",
 
@@ -15,6 +15,12 @@
   "password_label": "Password",
   "sign_in_btn": "Sign In",
 
-  "full_name_label": "Full Name",
-  "sign_up_btn": "Sign Up"
+  "first_name_label": "First Name",
+  "last_name_label": "Last Name",
+  "sign_up_btn": "Sign Up",
+
+  "first_name_placeholder": "e.g. John",
+  "last_name_placeholder": "e.g. Doe",
+  "email_placeholder": "name@example.com"
+
 }

@@ -1,5 +1,5 @@
 {
-  "welcome": "Willkommen,",
+  "welcome": "Willkommen",
   "logout": "Abmelden (Logout)",
   "success_msg": "Erfolgreich in Ihrer Anwendung angemeldet.",
 
@@ -15,7 +15,12 @@
   "password_label": "Passwort",
   "sign_in_btn": "Einloggen",
 
-  "full_name_label": "Vollständiger Name",
-  "sign_up_btn": "Registrieren"
-}
+  "first_name_label": "Vorname",
+  "last_name_label": "Nachname",
+  "sign_up_btn": "Registrieren",
 
+  "first_name_placeholder": "z.B. Max",
+  "last_name_placeholder": "z.B. Müller",
+  "email_placeholder": "name@beispiel.com"
+
+}

@@ -1,5 +1,5 @@
 {
-  "welcome": "Bem-vindo,",
+  "welcome": "Bem-vindo",
   "logout": "Sair (Logout)",
   "success_msg": "Login efetuado com sucesso na tua aplicação.",
 
@@ -15,6 +15,12 @@
   "password_label": "Palavra-passe",
   "sign_in_btn": "Iniciar Sessão",
 
-  "full_name_label": "Nome Completo",
-  "sign_up_btn": "Registar"
+  "first_name_label": "Primeiro Nome",
+  "last_name_label": "Apelido",
+  "sign_up_btn": "Registar",
+
+  "first_name_placeholder": "Ex: João",
+  "last_name_placeholder": "Ex: Silva",
+  "email_placeholder": "nome@exemplo.com"
+
 }

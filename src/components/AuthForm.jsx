@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import LoginCard from "./LoginCard";
 import RegisterCard from "./RegisterCard";
@@ -6,8 +5,10 @@ import RegisterCard from "./RegisterCard";
 export default function AuthForm({
   isLogin,
   setIsLogin,
-  name,
-  setName,
+  firstName,
+  setFirstName,
+  lastName,
+  setLastName,
   email,
   setEmail,
   password,
@@ -23,8 +24,6 @@ export default function AuthForm({
 
   return (
     <div className="auth-container">
-      {/* Seletor de Idiomas no topo do Cartão */}
-      {/* Substitua o bloco antigo das bandeiras por este no AuthForm.jsx */}
       <div
         className="language-switcher"
         style={{
@@ -123,8 +122,10 @@ export default function AuthForm({
           />
         ) : (
           <RegisterCard
-            name={name}
-            setName={setName}
+            firstName={firstName}
+            setFirstName={setFirstName}
+            lastName={lastName}
+            setLastName={setLastName}
             email={email}
             setEmail={setEmail}
             password={password}

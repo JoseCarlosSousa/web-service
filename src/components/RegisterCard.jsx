@@ -1,9 +1,10 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 export default function RegisterCard({
-  name,
-  setName,
+  firstName,
+  setFirstName,
+  lastName,
+  setLastName,
   email,
   setEmail,
   password,
@@ -15,21 +16,30 @@ export default function RegisterCard({
   return (
     <form onSubmit={onSubmit}>
       <div className="input-group">
-        <label>{t("full_name_label")}</label>
+        <label>{t("first_name_label")}</label>
         <input
           type="text"
-          placeholder="John Doe"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder={t("first_name_placeholder")}
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
           required
         />
       </div>
-
+      <div className="input-group">
+        <label>{t("last_name_label")}</label>
+        <input
+          type="text"
+          placeholder={t("last_name_placeholder")}
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          required
+        />
+      </div>
       <div className="input-group">
         <label>{t("email_label")}</label>
         <input
           type="email"
-          placeholder="name@example.com"
+          placeholder={t("email_placeholder")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required

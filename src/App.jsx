@@ -8,7 +8,8 @@ import "./App.css";
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -21,7 +22,7 @@ export default function App() {
     try {
       const response = isLogin 
         ? await loginUser(email, password)
-        : await registerUser(name, email, password);
+        : await registerUser(firstName, lastName, email, password);
 
       const data = await response.json();
 
@@ -30,17 +31,14 @@ export default function App() {
           if (data.token) {
             localStorage.setItem("userToken", data.token);
             const decoded = jwtDecode(data.token);
-            setUserName(decoded.name || decoded.sub || "Utilizador");
+            setUserName(decoded.firstName + " " + decoded.lastName);
           }
           setIsLoggedIn(true);
-          setEmail("");
-          setPassword("");
+          clearFilds();
         } else {
           setMessage("Sucesso: Conta criada! Faça login agora.");
           setIsLogin(true);
-          setName("");
-          setEmail("");
-          setPassword("");
+          clearFilds();
         }
       } else {
         setMessage(`Erro: ${data.message || "Algo correu mal."}`);
@@ -65,8 +63,10 @@ export default function App() {
     <AuthForm
       isLogin={isLogin}
       setIsLogin={setIsLogin}
-      name={name}
-      setName={setName}
+      firstName={firstName}
+      setFirstName={setFirstName}
+      lastName={lastName}
+      setLastName={setLastName}
       email={email}
       setEmail={setEmail}
       password={password}
@@ -75,4 +75,11 @@ export default function App() {
       onSubmit={handleSubmit}
     />
   );
+
+  function clearFilds() {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+  }
 }

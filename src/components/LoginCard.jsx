@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 export default function LoginCard({
@@ -16,7 +15,7 @@ export default function LoginCard({
         <label>{t("email_label")}</label>
         <input
           type="email"
-          placeholder="name@example.com"
+          placeholder={t("email_placeholder")} 
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
