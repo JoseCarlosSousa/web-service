@@ -70,5 +70,14 @@
   "country_uk":"United Kingdom (+44)",
   "country_es":"Spain (+34)",
   "country_fr":"France (+33)",
-  "country_it":"Italy (+39)"
+  "country_it":"Italy (+39)",
+  
+  "table_header_name": "Name",
+  "table_header_email": "Email Address",
+  "table_header_role": "Role / Permission",
+  "table_header_actions": "Actions",
+  "btn_save": "Save",
+  "role_user": "User",
+  "role_admin": "Administrator",
+  "role_editor": "Editor"
 }

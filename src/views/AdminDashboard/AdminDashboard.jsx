@@ -1,117 +1,101 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { fetchAuthenticatedGet } from "../../api/authService";
-import "./AdminDashboard.css";
 
-export default function AdminDashboard({ onEditUser }) {
+export default function AdminDashboardTable({ users, onUpdateRole }) {
   const { t } = useTranslation();
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  
+  // Controla qual a linha que está a ser editada
+  const [editingRowId, setEditingRowId] = useState(null);
+  // Guarda o valor temporário da Role selecionada
+  const [tempRole, setTempRole] = useState("");
 
-  useEffect(() => {
-    fetchAuthenticatedGet("/api/users")
-      .then((res) => (res.ok ? res.json() : []))
-      .then((data) => {
-        setUsers(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch users list:", err);
-        setLoading(false);
-      });
-  }, []);
+  const handleEditClick = (user) => {
+    setEditingRowId(user.id);
+    setTempRole(user.role);
+  };
 
-  if (loading) {
-    return (
-      <p className="profile-loading">
-        {t("loading_users") || "A carregar utilizadores..."}
-        ...
-      </p>
-    );
-  }
+  const handleCancelClick = () => {
+    setEditingRowId(null);
+    setTempRole("");
+  };
+
+  const handleSaveClick = (userId) => {
+    onUpdateRole(userId, tempRole);
+    setEditingRowId(null);
+  };
 
   return (
-    <div className="admin-dashboard-section">
-      <h3 className="admin-dashboard-title">
-        📋{" "}
-        {t("admin_panel_title", "Painel de Administração")}
-      </h3>
+    <table className="admin-table">
+      <thead>
+        <tr>
+          <th>{t("table_header_name") || "Nome"}</th>
+          <th>{t("table_header_email") || "Email"}</th>
+          <th>{t("table_header_role") || "Role"}</th>
+          <th>{t("table_header_actions") || "Ações"}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users.map((user) => {
+          const isCurrentRowEditing = editingRowId === user.id;
 
-      {users.length === 0 ? (
-        <p>
-          {t(
-            "no_users_found",
-            "Nenhum utilizador encontrado",
-          )}
-        </p>
-      ) : (
-        <table className="admin-table">
-          <thead>
-            <tr className="admin-table-header-row">
-              <th className="admin-table-cell">
-                {t("table_email", "Email")}
-              </th>
-              <th className="admin-table-cell">
-                {t("table_role", "Função")}
-              </th>
-              <th className="admin-table-cell">
-                {t(
-                  "table_customer_name",
-                  "Nome do Cliente",
+          return (
+            <tr key={user.id}>
+              <td>{user.firstName} {user.lastName}</td>
+              <td>{user.email}</td>
+              
+              {/* Coluna da Role com Select Traduzido */}
+              <td>
+                {isCurrentRowEditing ? (
+                  <select 
+                    value={tempRole} 
+                    onChange={(e) => setTempRole(e.target.value)}
+                    className="role-select"
+                  >
+                    <option value="USER">{t("role_user") || "USER"}</option>
+                    <option value="ADMIN">{t("role_admin") || "ADMIN"}</option>
+                    <option value="EDITOR">{t("role_editor") || "EDITOR"}</option> 
+                  </select>
+                ) : (
+                  <span className={`badge-role ${user.role.toLowerCase()}`}>
+                    {user.role === "ADMIN" && (t("role_admin") || "ADMIN")}
+                    {user.role === "USER" && (t("role_user") || "USER")}
+                    {user.role === "EDITOR" && (t("role_editor") || "EDITOR")}
+                  </span>
                 )}
-              </th>
-              <th className="admin-table-cell">
-                {t("table_status", "Estado")}
-              </th>
-              <th className="admin-table-cell">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr
-                key={user.id}
-                className="admin-table-body-row"
-              >
-                <td className="admin-table-cell">
-                  {user.email}
-                </td>
-                <td className="admin-table-cell">
-                  <span className="badge-role">
-                    {user.role}
-                  </span>
-                </td>
-                <td
-                  className={`admin-table-cell ${user.customer ? "customer-active" : "customer-empty"}`}
-                >
-                  {user.customer
-                    ? user.customer.name
-                    : t(
-                        "no_customer_profile",
-                        "Sem perfil associado",
-                      )}
-                </td>
-                <td className="admin-table-cell">
-                  <span
-                    className={`status-text ${user.active ? "status-active" : "status-inactive"}`}
+              </td>
+
+              {/* Botões de Ação Dinâmicos com Textos/Tooltips Traduzidos */}
+              <td>
+                {isCurrentRowEditing ? (
+                  <div className="action-buttons-row">
+                    <button 
+                      onClick={() => handleSaveClick(user.id)} 
+                      className="btn-save-row"
+                      title={t("btn_save") || "Guardar"}
+                    >
+                      💾 {t("btn_save") || "Guardar"}
+                    </button>
+                    <button 
+                      onClick={handleCancelClick} 
+                      className="btn-cancel-row"
+                      title={t("btn_cancel") || "Cancelar"}
+                    >
+                      ❌ {t("btn_cancel") || "Cancelar"}
+                    </button>
+                  </div>
+                ) : (
+                  <button 
+                    onClick={() => handleEditClick(user)} 
+                    className="btn-edit-row"
                   >
-                    {user.active
-                      ? t("status_active", "Ativo")
-                      : t("status_inactive", "Inativo")}
-                  </span>
-                </td>
-                <td className="admin-table-cell">
-                  <button
-                    onClick={() => onEditUser(user.id)}
-                    className="btn-table-edit"
-                  >
-                    ✏️ {t("btn_edit")}
+                    ✏️ {t("btn_edit") || "Editar"}
                   </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+                )}
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 }
