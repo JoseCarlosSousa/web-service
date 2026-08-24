@@ -62,7 +62,7 @@ function GlobalNavbar({ isLoggedIn, onLogout }) {
 
   return (
     <nav style={styles.nav}>
-      <div style={styles.logo}>🚀 kKósmico Apps</div>
+      <div style={styles.logo}>🚀 kkosmico App</div>
       <div style={styles.langContainer}>
         <button
           onClick={() => changeLanguage("pt")}

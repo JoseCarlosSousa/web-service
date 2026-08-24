@@ -1,0 +1,42 @@
+/* Navbar.css */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  alignItems: center; /* No CSS usa-align-items */
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.nav-logo {
+  font-weight: bold;
+  font-size: 18px;
+  color: #2ecc71; /* Corrigido o pequeno erro de digitação que tinhas no código */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lang-container {
+  display: flex;
+  gap: 10px;
+}
+
+.lang-btn {
+  padding: 6px 14px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+
+/* Agora já podes adicionar efeitos interativos que não conseguias antes! */
+.lang-btn:hover {
+  background-color: #e2e6ea;
+  border-color: #dae0e5;
+}

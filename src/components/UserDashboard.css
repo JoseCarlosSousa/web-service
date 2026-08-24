@@ -1,0 +1,104 @@
+.profile-loading {
+  text-align: center;
+  padding: 20px;
+}
+
+.user-profile-section {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.profile-title {
+  border-bottom: 2px solid #2ecc71;
+  padding-bottom: 10px;
+  margin: 0 0 8px 0;
+  fontSize: 22px;
+  color: #2c3e50;
+}
+
+.profile-subtitle {
+  color: #7f8c8d;
+  font-size: 14px;
+  margin: 0 0 20px 0;
+}
+
+.profile-message {
+  padding: 12px;
+  margin-bottom: 20px;
+  background-color: #e8f4fd;
+  border-radius: 6px;
+  color: #007bff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.form-input {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  background-color: #ffffff;
+  transition: border-color 0.2s;
+}
+
+.form-input:disabled {
+  background-color: #f8f9fa;
+  color: #7f8c8d;
+  cursor: not-allowed;
+}
+
+.btn-save {
+  background-color: #2ecc71;
+  color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* Adicione isto ao fim do seu ficheiro UserDashboard.css */
+.form-row-triple {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 15px;
+}
+
+/* Ajuste para ecrãs de telemóvel ficarem responsivos */
+@media (max-width: 480px) {
+  .form-row, .form-row-triple {
+    grid-template-columns: 1fr;
+  }
+}

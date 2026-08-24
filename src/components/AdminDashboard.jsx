@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { fetchAuthenticatedGet } from "../api/authService";
+import "./AdminDashboard.css";
 
 export default function AdminDashboard() {
   const { t } = useTranslation();
@@ -25,95 +26,44 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div
-      className="admin-dashboard-section"
-      style={{ marginTop: "20px" }}
-    >
-      <h3
-        style={{
-          borderBottom: "2px solid #2ecc71",
-          paddingBottom: "10px",
-        }}
-      >
+    <div className="admin-dashboard-section">
+      <h3 className="admin-dashboard-title">
         📋 {t("admin_panel_title")}
       </h3>
 
       {users.length === 0 ? (
         <p>{t("no_users_found")}</p>
       ) : (
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            marginTop: "15px",
-          }}
-        >
+        <table className="admin-table">
           <thead>
-            <tr
-              style={{
-                backgroundColor: "#f8f9fa",
-                textAlign: "left",
-                borderBottom: "2px solid #dee2e6",
-              }}
-            >
-              <th style={{ padding: "12px" }}>
-                {t("table_email")}
-              </th>
-              <th style={{ padding: "12px" }}>
-                {t("table_role")}
-              </th>
-              <th style={{ padding: "12px" }}>
-                {t("table_customer_name")}
-              </th>
-              <th style={{ padding: "12px" }}>
-                {t("table_status")}
-              </th>
+            <tr className="admin-table-header-row">
+              <th className="admin-table-cell">{t("table_email")}</th>
+              <th className="admin-table-cell">{t("table_role")}</th>
+              <th className="admin-table-cell">{t("table_customer_name")}</th>
+              <th className="admin-table-cell">{t("table_status")}</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr
-                key={user.id}
-                style={{
-                  borderBottom: "1px solid #dee2e6",
-                }}
-              >
-                <td style={{ padding: "12px" }}>
-                  {user.email}
-                </td>
-                <td style={{ padding: "12px" }}>
-                  <span
-                    style={{
-                      backgroundColor: "#e8f4fd",
-                      color: "#007bff",
-                      padding: "4px 8px",
-                      borderRadius: "4px",
-                      fontSize: "12px",
-                    }}
-                  >
-                    {user.role}
-                  </span>
+              <tr key={user.id} className="admin-table-body-row">
+                <td className="admin-table-cell">{user.email}</td>
+                <td className="admin-table-cell">
+                  <span className="badge-role">{user.role}</span>
                 </td>
                 <td
-                  style={{
-                    padding: "12px",
-                    color: user.customer
-                      ? "#2c3e50"
-                      : "#95a5a6",
-                  }}
+                  className={`admin-table-cell ${
+                    user.customer ? "customer-active" : "customer-empty"
+                  }`}
                 >
                   {user.customer
                     ? user.customer.name
                     : t("no_customer_profile")}
                 </td>
-                <td style={{ padding: "12px" }}>
+                <td className="admin-table-cell">
                   <span
-                    style={{
-                      color: user.active
-                        ? "#2ecc71"
-                        : "#e74c3c",
-                      fontWeight: "bold",
-                    }}
+                    className={`status-text ${
+                      user.active ? "status-active" : "status-inactive"
+                    }`}
                   >
                     {user.active
                       ? t("status_active")

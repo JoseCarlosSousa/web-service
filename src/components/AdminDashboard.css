@@ -1,0 +1,58 @@
+.admin-dashboard-section {
+  margin-top: 20px;
+}
+
+.admin-dashboard-title {
+  border-bottom: 2px solid #2ecc71;
+  padding-bottom: 10px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.admin-table-header-row {
+  background-color: #f8f9fa;
+  text-align: left;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.admin-table-cell {
+  padding: 12px;
+}
+
+.admin-table-body-row {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.badge-role {
+  background-color: #e8f4fd;
+  color: #007bff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* Classes dinâmicas para o Perfil do Cliente */
+.customer-active {
+  color: #2c3e50;
+}
+
+.customer-empty {
+  color: #95a5a6;
+}
+
+/* Classes dinâmicas para o Status (Ativo / Inativo) */
+.status-text {
+  font-weight: bold;
+}
+
+.status-active {
+  color: #2ecc71;
+}
+
+.status-inactive {
+  color: #e74c3c;
+}
