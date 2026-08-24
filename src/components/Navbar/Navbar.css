@@ -2,7 +2,7 @@
 .nav-container {
   display: flex;
   justify-content: space-between;
-  alignItems: center; /* No CSS usa-align-items */
+  align-items: center; /* No CSS usa-align-items */
   align-items: center;
   padding: 15px 30px;
   background-color: #ffffff;
@@ -39,4 +39,25 @@
 .lang-btn:hover {
   background-color: #e2e6ea;
   border-color: #dae0e5;
+}
+
+.lang-dropdown {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #e0e0e0;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.lang-dropdown:hover {
+  border-color: #a0a0a0;
+}
+
+.lang-dropdown:focus {
+  border-color: #007bff; /* Destaca a borda quando aberto */
 }

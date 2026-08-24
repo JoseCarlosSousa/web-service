@@ -6,3 +6,9 @@ export const COUNTRY_PREFIXES = [
   { code: "+33", nameKey: "country_fr" },
   { code: "+39", nameKey: "country_it" }
 ];
+
+export const AVAILABLE_LANGUAGES = [
+  { code: "pt", label: "🇵🇹 PT" },
+  { code: "en", label: "🇬🇧 EN" },
+  { code: "de", label: "🇩🇪 DE" }
+];
