@@ -2,8 +2,8 @@ import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { loginUser, registerUser } from "./api/authService";
-import DashboardCard from "./components/DashboardCard";
-import AdminDashboard from "./components/AdminDashboard"; // 🌟 Importe o seu componente de Admin aqui
+import UserDashboard from "./components/UserDashboard"; // O formulário da imagem
+import AdminDashboard from "./components/AdminDashboard"; // A tabela de listagem
 import AuthForm from "./components/AuthForm";
 import "./App.css";
 
@@ -16,7 +16,7 @@ function GlobalNavbar({ isLoggedIn, onLogout }) {
 
   return (
     <nav className="global-nav">
-      <div className="nav-logo">🚀 kkosmico App</div>
+      <div className="nav-logo">🚀 kKósmico Apps</div>
       <div className="nav-lang-container">
         <button
           onClick={() => changeLanguage("pt")}
@@ -59,7 +59,10 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [userName, setUserName] = useState("");
-  const [userRole, setUserRole] = useState(""); // 🌟 Novo estado para guardar o cargo (ADMIN, CUSTOMER, etc.)
+  const [userRole, setUserRole] = useState("");
+
+  // 🌟 Novo estado para controlar qual ecrã o ADMIN está a ver ("profile" ou "users_list")
+  const [activeTab, setActiveTab] = useState("profile");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,17 +86,15 @@ export default function App() {
             localStorage.setItem("token", data.token);
             const decoded = jwtDecode(data.token);
 
-            // 🌟 Guarda o nome completo
             setUserName(
               (decoded.firstName || "") +
                 " " +
                 (decoded.lastName || ""),
             );
-
-            // 🌟 Guarda o Role vindo de dentro do Token (verifique se a chave no seu backend se chama 'role')
-            setUserRole(decoded.role || "USER");
+            setUserRole(decoded.role || "CUSTOMER");
           }
           setIsLoggedIn(true);
+          setActiveTab("profile"); // Garante que começa no perfil ao entrar
           clearFields();
         } else {
           setMessage(
@@ -118,7 +119,8 @@ export default function App() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
-    setUserRole(""); // 🌟 Limpa o role no logout
+    setUserRole("");
+    setActiveTab("profile");
     setMessage("");
   };
 
@@ -128,20 +130,6 @@ export default function App() {
     setEmail("");
     setPassword("");
   }
-
-  // 🌟 Função auxiliar para decidir qual dashboard renderizar com base no Role
-  const renderDashboardBasedOnRole = () => {
-    if (userRole === "ADMIN") {
-      return <AdminDashboard onLogout={handleLogout} />;
-    }
-    // Caso contrário, vai para a view normal do utilizador/cliente
-    return (
-      <DashboardCard
-        userName={userName}
-        onLogout={handleLogout}
-      />
-    );
-  };
 
   return (
     <div className="app-container">
@@ -155,8 +143,49 @@ export default function App() {
         style={{ padding: "20px" }}
       >
         {isLoggedIn ? (
-          /* 🌟 Agora chama a função que valida as permissões do Role */
-          renderDashboardBasedOnRole()
+          <>
+            {/* 🌟 BOTÕES DE NAVEGAÇÃO: Aparecem fora do form apenas se for ADMIN */}
+            {userRole === "ADMIN" && (
+              <div
+                className="admin-menu-tabs"
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  justifyContent: "center",
+                  marginBottom: "20px",
+                }}
+              >
+                <button
+                  onClick={() => setActiveTab("profile")}
+                  className={`btn-lang ${activeTab === "profile" ? "active-tab" : ""}`}
+                  style={{
+                    padding: "10px 20px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  👤 Editar Meus Dados
+                </button>
+                <button
+                  onClick={() => setActiveTab("users_list")}
+                  className={`btn-lang ${activeTab === "users_list" ? "active-tab" : ""}`}
+                  style={{
+                    padding: "10px 20px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  📋 Listar Todos os Users
+                </button>
+              </div>
+            )}
+
+            {/* Renderização Condicional com base no botão clicado */}
+            {userRole === "ADMIN" &&
+            activeTab === "users_list" ? (
+              <AdminDashboard />
+            ) : (
+              <UserDashboard />
+            )}
+          </>
         ) : (
           <AuthForm
             isLogin={isLogin}

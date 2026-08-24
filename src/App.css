@@ -214,3 +214,9 @@ h2 {
 .btn-logout-nav:hover {
   background-color: #c0392b;
 }
+
+.admin-menu-tabs .active-tab {
+  background-color: #2ecc71 !important;
+  color: white !important;
+  border-color: #2ecc71 !important;
+}
