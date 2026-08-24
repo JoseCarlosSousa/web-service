@@ -51,7 +51,7 @@ export default function App() {
                 " " +
                 (decoded.lastName || ""),
             );
-            setUserRole(decoded.role || "CUSTOMER");
+            setUserRole(decoded.role || "USER");
           }
           setIsLoggedIn(true);
           setActiveTab("profile");

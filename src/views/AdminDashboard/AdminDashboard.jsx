@@ -9,9 +9,7 @@ export default function AdminDashboard({ onEditUser }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAuthenticatedGet(
-      `${import.meta.env.VITE_API_URL}/api/users`,
-    )
+    fetchAuthenticatedGet("/api/users")
       .then((res) => (res.ok ? res.json() : []))
       .then((data) => {
         setUsers(data);
