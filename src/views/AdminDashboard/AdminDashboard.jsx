@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function AdminDashboardTable({ users, onUpdateRole }) {
   const { t } = useTranslation();
   
-  // Controla qual a linha que está a ser editada
   const [editingRowId, setEditingRowId] = useState(null);
-  // Guarda o valor temporário da Role selecionada
   const [tempRole, setTempRole] = useState("");
 
   const handleEditClick = (user) => {
@@ -28,10 +26,10 @@ export default function AdminDashboardTable({ users, onUpdateRole }) {
     <table className="admin-table">
       <thead>
         <tr>
-          <th>{t("table_header_name") || "Nome"}</th>
-          <th>{t("table_header_email") || "Email"}</th>
-          <th>{t("table_header_role") || "Role"}</th>
-          <th>{t("table_header_actions") || "Ações"}</th>
+          <th>{t("table_header_name")}</th>
+          <th>{t("table_header_email")}</th>
+          <th>{t("table_header_role")}</th>
+          <th>{t("table_header_actions")}</th>
         </tr>
       </thead>
       <tbody>
@@ -43,7 +41,6 @@ export default function AdminDashboardTable({ users, onUpdateRole }) {
               <td>{user.firstName} {user.lastName}</td>
               <td>{user.email}</td>
               
-              {/* Coluna da Role com Select Traduzido */}
               <td>
                 {isCurrentRowEditing ? (
                   <select 
@@ -51,36 +48,37 @@ export default function AdminDashboardTable({ users, onUpdateRole }) {
                     onChange={(e) => setTempRole(e.target.value)}
                     className="role-select"
                   >
-                    <option value="USER">{t("role_user") || "USER"}</option>
-                    <option value="ADMIN">{t("role_admin") || "ADMIN"}</option>
-                    <option value="EDITOR">{t("role_editor") || "EDITOR"}</option> 
+                    <option value="USER">{t("role_user")}</option>
+                    <option value="ADMIN">{t("role_admin")}</option>
+                    <option value="MANAGER">{t("role_manager")}</option>
+                    <option value="EDITOR">{t("role_editor")}</option> 
                   </select>
                 ) : (
                   <span className={`badge-role ${user.role.toLowerCase()}`}>
-                    {user.role === "ADMIN" && (t("role_admin") || "ADMIN")}
-                    {user.role === "USER" && (t("role_user") || "USER")}
-                    {user.role === "EDITOR" && (t("role_editor") || "EDITOR")}
+                    {user.role === "ADMIN" && (t("role_admin"))}
+                    {user.role === "MANAGER" && (t("role_manager"))}
+                    {user.role === "USER" && (t("role_user"))}
+                    {user.role === "EDITOR" && (t("role_editor"))}
                   </span>
                 )}
               </td>
-
-              {/* Botões de Ação Dinâmicos com Textos/Tooltips Traduzidos */}
+              
               <td>
                 {isCurrentRowEditing ? (
                   <div className="action-buttons-row">
                     <button 
                       onClick={() => handleSaveClick(user.id)} 
                       className="btn-save-row"
-                      title={t("btn_save") || "Guardar"}
+                      title={t("btn_save")}
                     >
-                      💾 {t("btn_save") || "Guardar"}
+                      💾 {t("btn_save")}
                     </button>
                     <button 
                       onClick={handleCancelClick} 
                       className="btn-cancel-row"
-                      title={t("btn_cancel") || "Cancelar"}
+                      title={t("btn_cancel")}
                     >
-                      ❌ {t("btn_cancel") || "Cancelar"}
+                      ❌ {t("btn_cancel")}
                     </button>
                   </div>
                 ) : (
@@ -88,7 +86,7 @@ export default function AdminDashboardTable({ users, onUpdateRole }) {
                     onClick={() => handleEditClick(user)} 
                     className="btn-edit-row"
                   >
-                    ✏️ {t("btn_edit") || "Editar"}
+                    ✏️ {t("btn_edit")}
                   </button>
                 )}
               </td>

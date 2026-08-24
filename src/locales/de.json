@@ -79,5 +79,6 @@
   "btn_save": "Speichern",
   "role_user": "Benutzer",
   "role_admin": "Administrator",
+  "role_manager": "Manager",
   "role_editor": "Editor"
 }
