@@ -7,16 +7,9 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-# 🌟 ACEITA OS ARGUMENTOS DA RAILWAY DURANTE O BUILD
-ARG VITE_MODE=production
-ARG VITE_API_URL
-ARG VITE_CUSTOMER_API_URL
-
-# 🌟 EXPORTA COMO VARIÁVEIS PARA O VITE LER NO COMANDO ABAIXO
-ENV VITE_API_URL=$VITE_API_URL
-ENV VITE_CUSTOMER_API_URL=$VITE_CUSTOMER_API_URL
-
-RUN npm run build -- --mode ${VITE_MODE}
+# 🌟 CORREÇÃO: Removemos os ARGs manuais. 
+# O Vite vai ler diretamente as variáveis VITE_ do painel da Railway durante o comando de build abaixo.
+RUN npm run build
 
 # Stage 2: Web Server (Nginx)
 FROM nginx:alpine
