@@ -23,13 +23,18 @@ export default function UserDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    fetch(`${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token && { Authorization: `Bearer ${token}` }),
+    fetch(
+      "https://customer-service-production-8a63.up.railway.app/api/customers/me",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token && {
+            Authorization: `Bearer ${token}`,
+          }),
+        },
       },
-    })
+    )
       .then((res) => {
         if (res.ok) return res.json();
         throw new Error(
@@ -78,7 +83,7 @@ export default function UserDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`,
+        "https://customer-service-production-8a63.up.railway.app/api/customers/me",
         {
           method: "PUT",
           headers: {
