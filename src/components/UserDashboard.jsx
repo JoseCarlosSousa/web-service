@@ -30,7 +30,7 @@ export default function UserDashboard({ userId }) {
     { code: "+39", name: "Italy (+39)" },
   ];
 
-  // Determinar o URL correto com base na existência do userId
+  // Define dinamicamente o URL da API com base no utilizador em edição
   const baseUrl = import.meta.env.VITE_CUSTOMER_API_URL;
   const targetUrl = userId
     ? `${baseUrl}/api/customers/${userId}`
@@ -75,11 +75,14 @@ export default function UserDashboard({ userId }) {
         console.error("Failed to load profile data:", err);
         setLoading(false);
       });
-  }, [targetUrl]); // Recarrega sempre que o URL mudar (ex: ao clicar num utilizador diferente)
+  }, [targetUrl]); // Recarrega sempre que o Admin muda o utilizador a editar
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -114,6 +117,7 @@ export default function UserDashboard({ userId }) {
   };
 
   if (loading) {
+    // Usando a classe CSS em vez de style inline
     return (
       <p className="profile-loading">
         {t("loading_profile")}...
@@ -123,10 +127,11 @@ export default function UserDashboard({ userId }) {
 
   return (
     <div className="user-profile-section">
+      {/* Mostra um título diferente caso o Admin esteja a modificar uma conta externa */}
       <h3 className="profile-title">
         👤{" "}
         {userId
-          ? `${t("profile_title")} (Editando ID: ${userId})`
+          ? `${t("profile_title")} (ID: ${userId})`
           : t("profile_title")}
       </h3>
       <p className="profile-subtitle">
@@ -141,6 +146,7 @@ export default function UserDashboard({ userId }) {
         onSubmit={handleSubmit}
         className="profile-form"
       >
+        {/* Nome e Apelido */}
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
@@ -170,6 +176,7 @@ export default function UserDashboard({ userId }) {
           </div>
         </div>
 
+        {/* Email e Género */}
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
@@ -204,6 +211,7 @@ export default function UserDashboard({ userId }) {
           </div>
         </div>
 
+        {/* Indicativo e Telefone */}
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
@@ -242,6 +250,7 @@ export default function UserDashboard({ userId }) {
           </div>
         </div>
 
+        {/* Morada Completa */}
         <div className="form-field">
           <label className="form-label">
             {t("form_address")}
@@ -255,6 +264,7 @@ export default function UserDashboard({ userId }) {
           />
         </div>
 
+        {/* Cidade, Distrito e Código Postal */}
         <div className="form-row-triple">
           <div className="form-field">
             <label className="form-label">
@@ -294,6 +304,7 @@ export default function UserDashboard({ userId }) {
           </div>
         </div>
 
+        {/* País */}
         <div className="form-field">
           <label className="form-label">
             {t("form_country")}
@@ -307,6 +318,7 @@ export default function UserDashboard({ userId }) {
           />
         </div>
 
+        {/* Botão Salvar */}
         <button type="submit" className="btn-save">
           {t("btn_save") || "Salvar Alterações"}
         </button>

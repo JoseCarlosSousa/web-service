@@ -92,14 +92,57 @@
   margin-top: 10px;
 }
 
-/* Adicione isto ao fim do seu ficheiro UserDashboard.css */
 .form-row-triple {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   gap: 15px;
 }
 
-/* Ajuste para ecrãs de telemóvel ficarem responsivos */
+/* ==========================================================================
+   Novas Classes: Abas do Administrador (Removidos os Styles do App.jsx)
+   ========================================================================== */
+.admin-menu-tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.admin-tab-btn {
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+/* Destaca o botão da aba selecionada */
+.admin-menu-tabs .active-tab {
+  background-color: #2ecc71 !important;
+  color: white !important;
+  border-color: #2ecc71 !important;
+}
+
+/* ==========================================================================
+   Nova Classe: Botão Editar da Tabela (Removidos os Styles do AdminDashboard)
+   ========================================================================== */
+.btn-table-edit {
+  padding: 5px 12px;
+  font-size: 12px;
+  border: 1px solid #2563eb;
+  color: #2563eb;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-table-edit:hover {
+  background-color: #2563eb;
+  color: white;
+}
+
+/* ==========================================================================
+   Ajuste de Responsividade
+   ========================================================================== */
 @media (max-width: 480px) {
   .form-row,
   .form-row-triple {
