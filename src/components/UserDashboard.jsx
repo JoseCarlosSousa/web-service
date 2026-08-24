@@ -20,16 +20,6 @@ export default function UserDashboard() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
-  // Lista padronizada de indicativos de países europeus principais
-  const countryPrefixes = [
-    { code: "+351", name: "Portugal (+351)" },
-    { code: "+49", name: "Germany (+49)" },
-    { code: "+44", name: "United Kingdom (+44)" },
-    { code: "+34", name: "Spain (+34)" },
-    { code: "+33", name: "France (+33)" },
-    { code: "+39", name: "Italy (+39)" }
-  ];
-
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -42,7 +32,9 @@ export default function UserDashboard() {
     })
       .then((res) => {
         if (res.ok) return res.json();
-        throw new Error(`Server responded with status ${res.status}`);
+        throw new Error(
+          `Server responded with status ${res.status}`,
+        );
       })
       .then((data) => {
         if (data) {
@@ -63,7 +55,10 @@ export default function UserDashboard() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("Failed to load authenticated profile data:", err);
+        console.error(
+          "Failed to load authenticated profile data:",
+          err,
+        );
         setLoading(false);
       });
   }, []);
@@ -82,14 +77,19 @@ export default function UserDashboard() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:8094/api/customers/me", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token && { Authorization: `Bearer ${token}` }),
+      const response = await fetch(
+        "http://localhost:8094/api/customers/me",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token && {
+              Authorization: `Bearer ${token}`,
+            }),
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
-      });
+      );
 
       if (response.ok) {
         setMessage(t("profile_update_success"));
@@ -97,15 +97,23 @@ export default function UserDashboard() {
         setMessage(t("profile_update_error"));
       }
     } catch (error) {
-      console.error("Error submitting profile update:", error);
+      console.error(
+        "Error submitting profile update:",
+        error,
+      );
       setMessage(t("profile_update_error"));
     }
   };
 
   if (loading) {
-    return <p style={{ textAlign: "center", padding: "20px" }}>{t("loading_profile")}...</p>;
+    return (
+      <p style={{ textAlign: "center", padding: "20px" }}>
+        {t("loading_profile")}...
+      </p>
+    );
   }
 
+  // Estilos inline centralizados para facilitar a manutenção
   const styles = {
     section: {
       maxWidth: "600px",
@@ -114,19 +122,19 @@ export default function UserDashboard() {
       backgroundColor: "#ffffff",
       borderRadius: "8px",
       boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
-      fontFamily: "system-ui, -apple-system, sans-serif"
+      fontFamily: "system-ui, -apple-system, sans-serif",
     },
     title: {
       borderBottom: "2px solid #2ecc71",
       paddingBottom: "10px",
       margin: "0 0 8px 0",
       fontSize: "22px",
-      color: "#2c3e50"
+      color: "#2c3e50",
     },
     subtitle: {
       color: "#7f8c8d",
       fontSize: "14px",
-      margin: "0 0 20px 0"
+      margin: "0 0 20px 0",
     },
     message: {
       padding: "12px",
@@ -135,27 +143,27 @@ export default function UserDashboard() {
       borderRadius: "6px",
       color: "#007bff",
       fontSize: "14px",
-      fontWeight: "500"
+      fontWeight: "500",
     },
     form: {
       display: "flex",
       flexDirection: "column",
-      gap: "18px"
+      gap: "18px",
     },
     row: {
       display: "grid",
       gridTemplateColumns: "1fr 1fr",
-      gap: "15px"
+      gap: "15px",
     },
     field: {
       display: "flex",
       flexDirection: "column",
-      gap: "6px"
+      gap: "6px",
     },
     label: {
       fontSize: "14px",
       fontWeight: "600",
-      color: "#34495e"
+      color: "#34495e",
     },
     input: {
       padding: "10px",
@@ -163,13 +171,12 @@ export default function UserDashboard() {
       border: "1px solid #ccc",
       fontSize: "14px",
       outline: "none",
-      backgroundColor: "#ffffff",
-      transition: "border-color 0.2s"
+      transition: "border-color 0.2s",
     },
     inputDisabled: {
       backgroundColor: "#f8f9fa",
       color: "#7f8c8d",
-      cursor: "not-allowed"
+      cursor: "not-allowed",
     },
     btnSave: {
       backgroundColor: "#2ecc71",
@@ -180,22 +187,30 @@ export default function UserDashboard() {
       cursor: "pointer",
       fontWeight: "bold",
       fontSize: "16px",
-      marginTop: "10px"
-    }
+      marginTop: "10px",
+      transition: "background-color 0.2s",
+    },
   };
 
   return (
-    <div className="user-profile-section" style={styles.section}>
+    <div
+      className="user-profile-section"
+      style={styles.section}
+    >
       <h3 style={styles.title}>👤 {t("profile_title")}</h3>
       <p style={styles.subtitle}>{t("profile_subtitle")}</p>
 
-      {message && <div style={styles.message}>{message}</div>}
+      {message && (
+        <div style={styles.message}>{message}</div>
+      )}
 
       <form onSubmit={handleSubmit} style={styles.form}>
         {/* Nome e Apelido */}
         <div style={styles.row}>
           <div style={styles.field}>
-            <label style={styles.label}>{t("form_first_name")}</label>
+            <label style={styles.label}>
+              {t("form_first_name")}
+            </label>
             <input
               type="text"
               name="firstName"
@@ -206,7 +221,9 @@ export default function UserDashboard() {
             />
           </div>
           <div style={styles.field}>
-            <label style={styles.label}>{t("form_last_name")}</label>
+            <label style={styles.label}>
+              {t("form_last_name")}
+            </label>
             <input
               type="text"
               name="lastName"
@@ -220,37 +237,40 @@ export default function UserDashboard() {
 
         {/* Email */}
         <div style={styles.field}>
-          <label style={styles.label}>{t("form_email")}</label>
+          <label style={styles.label}>
+            {t("form_email")}
+          </label>
           <input
             type="email"
             name="email"
             value={formData.email}
             disabled
-            style={{ ...styles.input, ...styles.inputDisabled }}
+            style={{
+              ...styles.input,
+              ...styles.inputDisabled,
+            }}
           />
         </div>
 
-        {/* Indicativo (Lista por Países) e Telefone */}
+        {/* Indicativo e Telefone */}
         <div style={styles.row}>
           <div style={styles.field}>
-            <label style={styles.label}>{t("form_phone_prefix")}</label>
-            <select
+            <label style={styles.label}>
+              {t("form_phone_prefix")}
+            </label>
+            <input
+              type="text"
               name="phonePrefix"
               value={formData.phonePrefix}
               onChange={handleChange}
               style={styles.input}
               required
-            >
-              <option value="">{t("select_option")}</option>
-              {countryPrefixes.map((prefix) => (
-                <option key={prefix.code} value={prefix.code}>
-                  {prefix.name}
-                </option>
-              ))}
-            </select>
+            />
           </div>
           <div style={styles.field}>
-            <label style={styles.label}>{t("form_phone_number")}</label>
+            <label style={styles.label}>
+              {t("form_phone_number")}
+            </label>
             <input
               type="text"
               name="phoneNumber"
@@ -262,25 +282,25 @@ export default function UserDashboard() {
           </div>
         </div>
 
-        {/* Género (Menu de Escolha) */}
+        {/* Género */}
         <div style={styles.field}>
-          <label style={styles.label}>{t("form_gender")}</label>
-          <select
+          <label style={styles.label}>
+            {t("form_gender")}
+          </label>
+          <input
+            type="text"
             name="gender"
             value={formData.gender}
             onChange={handleChange}
             style={styles.input}
-          >
-            <option value="">{t("select_option")}</option>
-            <option value="MALE">{t("gender_male")}</option>
-            <option value="FEMALE">{t("gender_female")}</option>
-            <option value="OTHER">{t("gender_other")}</option>
-          </select>
+          />
         </div>
 
         {/* Morada */}
         <div style={styles.field}>
-          <label style={styles.label}>{t("form_address")}</label>
+          <label style={styles.label}>
+            {t("form_address")}
+          </label>
           <input
             type="text"
             name="address"
@@ -290,10 +310,12 @@ export default function UserDashboard() {
           />
         </div>
 
-        {/* Cidade e Distrito */}
+        {/* Cidade e Distrito/Estado */}
         <div style={styles.row}>
           <div style={styles.field}>
-            <label style={styles.label}>{t("form_city")}</label>
+            <label style={styles.label}>
+              {t("form_city")}
+            </label>
             <input
               type="text"
               name="city"
@@ -303,7 +325,9 @@ export default function UserDashboard() {
             />
           </div>
           <div style={styles.field}>
-            <label style={styles.label}>{t("form_state")}</label>
+            <label style={styles.label}>
+              {t("form_state")}
+            </label>
             <input
               type="text"
               name="state"
@@ -314,10 +338,12 @@ export default function UserDashboard() {
           </div>
         </div>
 
-        {/* Código Postal e País */}
+        {/* Código Postal e País (Correção da etiqueta duplicada) */}
         <div style={styles.row}>
           <div style={styles.field}>
-            <label style={styles.label}>{t("form_zip_code")}</label>
+            <label style={styles.label}>
+              {t("form_zip_code")}
+            </label>
             <input
               type="text"
               name="zipCode"
@@ -327,7 +353,9 @@ export default function UserDashboard() {
             />
           </div>
           <div style={styles.field}>
-            <label style={styles.label}>{t("form_country")}</label>
+            <label style={styles.label}>
+              {t("form_country")}
+            </label>
             <input
               type="text"
               name="country"

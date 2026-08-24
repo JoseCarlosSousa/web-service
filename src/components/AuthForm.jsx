@@ -16,90 +16,10 @@ export default function AuthForm({
   message,
   onSubmit,
 }) {
-  const { t, i18n } = useTranslation();
-
-  const alterarIdioma = (lng) => {
-    i18n.changeLanguage(lng);
-  };
+  const { t } = useTranslation();
 
   return (
     <div className="auth-container">
-      <div
-        className="language-switcher"
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          display: "flex",
-          gap: "15px",
-          zIndex: 1000,
-        }}
-      >
-        <button
-          onClick={() => i18n.changeLanguage("pt")}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "24px",
-            transition: "transform 0.2s",
-            opacity: i18n.language.startsWith("pt")
-              ? 1
-              : 0.4,
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.transform = "scale(1.2)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.transform = "scale(1)")
-          }
-        >
-          🇵🇹
-        </button>
-        <button
-          onClick={() => i18n.changeLanguage("en")}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "24px",
-            transition: "transform 0.2s",
-            opacity: i18n.language.startsWith("en")
-              ? 1
-              : 0.4,
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.transform = "scale(1.2)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.transform = "scale(1)")
-          }
-        >
-          🇬🇧
-        </button>
-        <button
-          onClick={() => i18n.changeLanguage("de")}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            fontSize: "24px",
-            transition: "transform 0.2s",
-            opacity: i18n.language.startsWith("de")
-              ? 1
-              : 0.4,
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.transform = "scale(1.2)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.transform = "scale(1)")
-          }
-        >
-          🇩🇪
-        </button>
-      </div>
-
       <div className="auth-card">
         <h2>
           {isLogin

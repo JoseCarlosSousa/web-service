@@ -21,6 +21,41 @@
 
   "first_name_placeholder": "Ex: João",
   "last_name_placeholder": "Ex: Silva",
-  "email_placeholder": "nome@exemplo.com"
+  "email_placeholder": "nome@exemplo.com",
 
+  "loading_users": "A carregar utilizadores",
+  "admin_panel_title": "Painel de Administração - Utilizadores Registados",
+  "no_users_found": "Nenhum utilizador encontrado.",
+  "no_customer_profile": "Sem perfil de cliente",
+  "status_active": "Ativo",
+  "status_inactive": "Inativo",
+  "table_email": "E-mail",
+  "table_role": "Função",
+  "table_customer_name": "Nome do Cliente",
+  "table_status": "Estado",
+
+  "loading_profile": "A carregar dados do perfil",
+  "profile_title": "O Meu Perfil",
+  "profile_subtitle": "Mantenha os detalhes da sua conta atualizados.",
+  "profile_update_success": "Perfil atualizado com sucesso!",
+  "profile_update_error": "Falha ao atualizar o perfil. Por favor, tente novamente.",
+  "form_first_name": "Primeiro Nome",
+  "form_last_name": "Apelido",
+  "form_email": "Endereço de E-mail (Não alterável)",
+  "form_phone": "Número de Telefone",
+  "btn_save_changes": "Guardar Alterações",
+
+  "form_phone_prefix": "Indicativo",
+  "form_phone_number": "Número de Telefone",
+  "form_gender": "Género",
+  "form_address": "Morada",
+  "form_city": "Cidade",
+  "form_state": "Distrito / Estado",
+  "form_zip_code": "Código Postal",
+  "form_country": "País",
+
+  "gender_male": "Masculino",
+  "gender_female": "Feminino",
+  "gender_other": "Outro",
+  "select_option": "Selecionar"
 }

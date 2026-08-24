@@ -21,6 +21,43 @@
 
   "first_name_placeholder": "e.g. John",
   "last_name_placeholder": "e.g. Doe",
-  "email_placeholder": "name@example.com"
+  "email_placeholder": "name@example.com",
+
+  "loading_users": "Loading users",
+  "admin_panel_title": "Administration Panel - Registered Users",
+  "no_users_found": "No users found.",
+  "no_customer_profile": "No customer profile",
+  "status_active": "Active",
+  "status_inactive": "Inactive",
+  "table_email": "Email",
+  "table_role": "Role",
+  "table_customer_name": "Customer Name",
+  "table_status": "Status",
+
+  "loading_profile": "Loading profile data",
+  "profile_title": "My Profile",
+  "profile_subtitle": "Keep your account details up to date.",
+  "profile_update_success": "Profile updated successfully!",
+  "profile_update_error": "Failed to update profile. Please try again.",
+  "form_first_name": "First Name",
+  "form_last_name": "Last Name",
+  "form_email": "Email Address (Cannot change)",
+  "form_phone": "Phone Number",
+  "btn_save_changes": "Save Changes",
+
+  "form_phone_prefix": "Country Code",
+  "form_phone_number": "Phone Number",
+  "form_gender": "Gender",
+  "form_address": "Address",
+  "form_city": "City",
+  "form_state": "State / Region",
+  "form_zip_code": "ZIP / Postal Code",
+  "form_country": "Country",
+  
+  "gender_male": "Male",
+  "gender_female": "Female",
+  "gender_other": "Other",
+  "select_option": "Select"
 
 }
+
