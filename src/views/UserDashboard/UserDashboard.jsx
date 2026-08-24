@@ -21,7 +21,7 @@ export default function UserDashboard({ userId }) {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
-  // 🌟 NOVO ESTADO: Controla se o formulário está editável (começa em false)
+  // Controla se o formulário está editável
   const [isEditing, setIsEditing] = useState(false);
 
   const countryPrefixes = [
@@ -41,7 +41,7 @@ export default function UserDashboard({ userId }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setLoading(true);
-    setIsEditing(false); // 🌟 Sempre que mudar de utilizador, volta ao modo leitura
+    setIsEditing(false);
 
     fetch(targetUrl, {
       method: "GET",
@@ -104,7 +104,7 @@ export default function UserDashboard({ userId }) {
 
       if (response.ok) {
         setMessage(t("profile_update_success"));
-        setIsEditing(false); // 🌟 Bloqueia os campos novamente após gravar com sucesso
+        setIsEditing(false);
       } else {
         setMessage(t("profile_update_error"));
       }
@@ -127,41 +127,37 @@ export default function UserDashboard({ userId }) {
 
   return (
     <div className="user-profile-section">
-      <h3 className="profile-title">
-        👤{" "}
-        {userId
-          ? `${t("profile_title")} (ID: ${userId})`
-          : t("profile_title")}
-      </h3>
+      {/* Contentor flexível para alinhar o Título e o Botão lado a lado */}
+      <div className="profile-title-container">
+        <h3 className="profile-title">
+          👤{" "}
+          {userId
+            ? `${t("profile_title")} (ID: ${userId})`
+            : t("profile_title")}
+        </h3>
+
+        {/* Botão Dinâmico: Alterna classe e texto entre Editar e Cancelar */}
+        <button
+          type="button"
+          onClick={() => setIsEditing(!isEditing)}
+          className={
+            isEditing
+              ? "btn-table-cancel"
+              : "btn-table-edit"
+          }
+        >
+          {isEditing
+            ? `❌ ${t("btn_cancel") || "Cancelar"}`
+            : `✏️ ${t("btn_edit") || "Editar"}`}
+        </button>
+      </div>
+
       <p className="profile-subtitle">
         {t("profile_subtitle")}
       </p>
 
       {message && (
         <div className="profile-message">{message}</div>
-      )}
-
-      {/* 🌟 BOTÃO DE ATIVAÇÃO: Se não estiver a editar, mostra botão para ativar o modo de edição */}
-      {!isEditing && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginBottom: "15px",
-          }}
-        >
-          <button
-            type="button"
-            onClick={() => setIsEditing(true)}
-            className="btn-table-edit"
-            style={{
-              padding: "8px 16px",
-              fontSize: "14px",
-            }}
-          >
-            ✏️ {t("btn_edit") || "Editar Dados"}
-          </button>
-        </div>
       )}
 
       <form
@@ -181,7 +177,7 @@ export default function UserDashboard({ userId }) {
               onChange={handleChange}
               className="form-input"
               required
-              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+              disabled={!isEditing}
             />
           </div>
           <div className="form-field">
@@ -195,7 +191,7 @@ export default function UserDashboard({ userId }) {
               onChange={handleChange}
               className="form-input"
               required
-              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+              disabled={!isEditing}
             />
           </div>
         </div>
@@ -206,7 +202,6 @@ export default function UserDashboard({ userId }) {
             <label className="form-label">
               {t("form_email")}
             </label>
-            {/* O email fica sempre desativado por regra de negócio */}
             <input
               type="email"
               name="email"
@@ -224,7 +219,7 @@ export default function UserDashboard({ userId }) {
               value={formData.gender}
               onChange={handleChange}
               className="form-input"
-              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+              disabled={!isEditing}
             >
               <option value="">{t("select_option")}</option>
               <option value="MALE">
@@ -249,7 +244,7 @@ export default function UserDashboard({ userId }) {
               onChange={handleChange}
               className="form-input"
               required
-              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+              disabled={!isEditing}
             >
               <option value="">{t("select_option")}</option>
               {countryPrefixes.map((prefix) => (
@@ -273,7 +268,7 @@ export default function UserDashboard({ userId }) {
               onChange={handleChange}
               className="form-input"
               required
-              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+              disabled={!isEditing}
             />
           </div>
         </div>
@@ -289,7 +284,7 @@ export default function UserDashboard({ userId }) {
             value={formData.address}
             onChange={handleChange}
             className="form-input"
-            disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+            disabled={!isEditing}
           />
         </div>
 
@@ -305,7 +300,7 @@ export default function UserDashboard({ userId }) {
               value={formData.city}
               onChange={handleChange}
               className="form-input"
-              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+              disabled={!isEditing}
             />
           </div>
           <div className="form-field">
@@ -318,7 +313,7 @@ export default function UserDashboard({ userId }) {
               value={formData.state}
               onChange={handleChange}
               className="form-input"
-              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+              disabled={!isEditing}
             />
           </div>
           <div className="form-field">
@@ -331,7 +326,7 @@ export default function UserDashboard({ userId }) {
               value={formData.zipCode}
               onChange={handleChange}
               className="form-input"
-              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+              disabled={!isEditing}
             />
           </div>
         </div>
@@ -347,14 +342,16 @@ export default function UserDashboard({ userId }) {
             value={formData.country}
             onChange={handleChange}
             className="form-input"
-            disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
+            disabled={!isEditing}
           />
         </div>
 
-        {/* 🌟 BOTÃO GRAVAR: Só aparece na tela se o modo de edição estiver ativo */}
+        {/* Botão Gravar: Corrigida a chave de tradução para bater certo com os seus ficheiros locales */}
         {isEditing && (
           <button type="submit" className="btn-save">
-            {t("btn_save") || "Salvar Alterações"}
+            {t("btn_save_changes") ||
+              t("btn_save") ||
+              "Salvar Alterações"}
           </button>
         )}
       </form>
