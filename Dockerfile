@@ -7,14 +7,15 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-# 🌟 SOLUÇÃO CRÍTICA: Captura as variáveis da Railway e força a criação do ficheiro .env antes do build
+# 🌟 A PONTE: Diz ao Docker para capturar as variáveis correspondentes da Railway
 ARG VITE_API_URL
 ARG VITE_CUSTOMER_API_URL
 
+# 🌟 CRIAÇÃO DO FICHEIRO: Escreve fisicamente as URLs no .env de produção
 RUN echo "VITE_API_URL=${VITE_API_URL}" > .env.production && \
     echo "VITE_CUSTOMER_API_URL=${VITE_CUSTOMER_API_URL}" >> .env.production
 
-# Compila o projeto em modo produção real com as URLs embutidas
+# Compila o projeto aplicando o modo produção real com os links embutidos
 RUN npm run build -- --mode production
 
 # Stage 2: Web Server (Nginx)
