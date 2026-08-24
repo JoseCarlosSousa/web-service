@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function UserDashboard() {
@@ -20,7 +20,6 @@ export default function UserDashboard() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
-  // Lista padronizada de indicativos de países europeus principais
   const countryPrefixes = [
     { code: "+351", name: "Portugal (+351)" },
     { code: "+49", name: "Germany (+49)" },
@@ -33,8 +32,7 @@ export default function UserDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    fetch(
-      "https://kkosmico-customer-service.up.railway.app/api/customers/me",
+    fetch(`${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`,
       {
         method: "GET",
         headers: {
@@ -93,7 +91,7 @@ export default function UserDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "https://kkosmico-customer-service.up.railway.app/api/customers/me",
+        `${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`,
         {
           method: "PUT",
           headers: {

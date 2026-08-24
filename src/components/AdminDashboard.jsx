@@ -8,8 +8,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch all users and nested customers from the API Gateway
-    fetchAuthenticatedGet("/api/users")
+    fetchAuthenticatedGet(`${import.meta.env.VITE_API_URL}/api/users`)
       .then((res) => (res.ok ? res.json() : []))
       .then((data) => {
         setUsers(data);

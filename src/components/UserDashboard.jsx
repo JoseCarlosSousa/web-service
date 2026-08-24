@@ -24,7 +24,7 @@ export default function UserDashboard() {
     const token = localStorage.getItem("token");
 
     fetch(
-      "https://customer-service-production-3dbb.up.railway.app/api/customers/me",
+      `${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`,
       {
         method: "GET",
         headers: {
@@ -82,8 +82,7 @@ export default function UserDashboard() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        "https://customer-service-production-3dbb.up.railway.app/api/customers/me",
+      const response = await fetch(`${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`,
         {
           method: "PUT",
           headers: {
