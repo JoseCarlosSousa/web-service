@@ -336,9 +336,7 @@ export default function UserDashboard({ userId }) {
         </div>
         {isEditing && (
           <button type="submit" className="btn-save">
-            {t("btn_save_changes") ||
-              t("btn_save") ||
-              "Salvar Alterações"}
+            {t("btn_save_changes")}
           </button>
         )}
       </form>

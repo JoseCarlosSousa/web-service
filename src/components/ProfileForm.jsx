@@ -13,7 +13,6 @@ export default function ProfileForm({ formData, onChange, onSubmit }) {
         <FormInput label={t("form_last_name")} name="lastName" value={formData.lastName} onChange={onChange} required />
       </div>
 
-      {/* Email e Género */}
       <div className="form-row">
         <FormInput label={t("form_email")} name="email" value={formData.email} onChange={onChange} disabled />
         <div className="form-field">
@@ -26,7 +25,6 @@ export default function ProfileForm({ formData, onChange, onSubmit }) {
         </div>
       </div>
 
-      {/* Indicativo e Telefone */}
       <div className="form-row">
         <div className="form-field">
           <label className="form-label">{t("form_phone_prefix")}</label>
@@ -57,7 +55,7 @@ export default function ProfileForm({ formData, onChange, onSubmit }) {
 
       {/* Botão Salvar */}
       <button type="submit" className="btn-save">
-        {t("btn_save") || "Salvar Alterações"}
+        {t("btn_save_changes")}
       </button>
     </form>
   );
