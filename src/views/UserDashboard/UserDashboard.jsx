@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { COUNTRY_PREFIXES } from "../constants/countries";
+import { COUNTRY_PREFIXES } from "../../constants/countries";
 
 import "./UserDashboard.css";
 
