@@ -2,8 +2,8 @@ import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { loginUser, registerUser } from "./api/authService";
-import UserDashboard from "./components/UserDashboard"; 
-import AdminDashboard from "./components/AdminDashboard"; 
+import UserDashboard from "./components/UserDashboard";
+import AdminDashboard from "./components/AdminDashboard";
 import AuthForm from "./components/AuthForm";
 import "./App.css";
 
@@ -18,12 +18,30 @@ function GlobalNavbar({ isLoggedIn, onLogout }) {
     <nav className="global-nav">
       <div className="nav-logo">🚀 kKósmico Apps</div>
       <div className="nav-lang-container">
-        <button onClick={() => changeLanguage("pt")} className="btn-lang">🇵🇹 PT</button>
-        <button onClick={() => changeLanguage("en")} className="btn-lang">🇬🇧 EN</button>
-        <button onClick={() => changeLanguage("de")} className="btn-lang">🇩🇪 DE</button>
+        <button
+          onClick={() => changeLanguage("pt")}
+          className="btn-lang"
+        >
+          🇵🇹 PT
+        </button>
+        <button
+          onClick={() => changeLanguage("en")}
+          className="btn-lang"
+        >
+          🇬🇧 EN
+        </button>
+        <button
+          onClick={() => changeLanguage("de")}
+          className="btn-lang"
+        >
+          🇩🇪 DE
+        </button>
 
         {isLoggedIn && (
-          <button onClick={onLogout} className="btn-logout-nav">
+          <button
+            onClick={onLogout}
+            className="btn-logout-nav"
+          >
             {t("btn_logout", "Logout")}
           </button>
         )}
@@ -41,8 +59,8 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [userName, setUserName] = useState("");
-  const [userRole, setUserRole] = useState(""); 
-  
+  const [userRole, setUserRole] = useState("");
+
   // Controlo de navegação para o ADMIN
   const [activeTab, setActiveTab] = useState("profile");
   const [editingUserId, setEditingUserId] = useState(null);
@@ -54,7 +72,12 @@ export default function App() {
     try {
       const response = isLogin
         ? await loginUser(email, password)
-        : await registerUser(firstName, lastName, email, password);
+        : await registerUser(
+            firstName,
+            lastName,
+            email,
+            password,
+          );
 
       const data = await response.json();
 
@@ -63,24 +86,34 @@ export default function App() {
           if (data.token) {
             localStorage.setItem("token", data.token);
             const decoded = jwtDecode(data.token);
-            
-            setUserName((decoded.firstName || "") + " " + (decoded.lastName || ""));
-            setUserRole(decoded.role || "CUSTOMER"); 
+
+            setUserName(
+              (decoded.firstName || "") +
+                " " +
+                (decoded.lastName || ""),
+            );
+            setUserRole(decoded.role || "CUSTOMER");
           }
           setIsLoggedIn(true);
           setActiveTab("profile");
           setEditingUserId(null);
           clearFields();
         } else {
-          setMessage("Sucesso: Conta criada! Faça login agora.");
+          setMessage(
+            "Sucesso: Conta criada! Faça login agora.",
+          );
           setIsLogin(true);
           clearFields();
         }
       } else {
-        setMessage(`Erro: ${data.message || "Algo correu mal."}`);
+        setMessage(
+          `Erro: ${data.message || "Algo correu mal."}`,
+        );
       }
     } catch (error) {
-      setMessage("Erro: Não foi possível ligar ao servidor.");
+      setMessage(
+        "Erro: Não foi possível ligar ao servidor.",
+      );
       console.error(error);
     }
   };
@@ -104,45 +137,54 @@ export default function App() {
   // Função chamada ao clicar em Editar na tabela de utilizadores
   const handleEditUserClick = (userId) => {
     setEditingUserId(userId);
-    setActiveTab("profile"); 
+    setActiveTab("profile");
   };
 
   // Garante a limpeza do ID se o Admin quiser voltar ao seu próprio perfil
   const handleTabChange = (tabName) => {
     if (tabName === "profile") {
-      setEditingUserId(null); 
+      setEditingUserId(null);
     }
     setActiveTab(tabName);
   };
 
   return (
     <div className="app-container">
-      <GlobalNavbar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+      <GlobalNavbar
+        isLoggedIn={isLoggedIn}
+        onLogout={handleLogout}
+      />
 
-      <div className="main-content" style={{ padding: "20px" }}>
+      <div
+        className="main-content"
+        style={{ padding: "20px" }}
+      >
         {isLoggedIn ? (
           <>
             {userRole === "ADMIN" && (
-              <div className="admin-menu-tabs" style={{ display: "flex", gap: "10px", justifyContent: "center", marginBottom: "20px" }}>
-                <button 
+              <div className="admin-menu-tabs">
+                <button
                   onClick={() => handleTabChange("profile")}
-                  className={`btn-lang ${activeTab === "profile" && !editingUserId ? "active-tab" : ""}`}
-                  style={{ padding: "10px 20px", fontWeight: "bold" }}
+                  className={`btn-lang admin-tab-btn ${activeTab === "profile" && !editingUserId ? "active-tab" : ""}`}
                 >
-                  👤 Editar Meus Dados
+                  👤 {t("admin_tab_my_profile")}
                 </button>
-                <button 
-                  onClick={() => handleTabChange("users_list")}
-                  className={`btn-lang ${activeTab === "users_list" ? "active-tab" : ""}`}
-                  style={{ padding: "10px 20px", fontWeight: "bold" }}
+                <button
+                  onClick={() =>
+                    handleTabChange("users_list")
+                  }
+                  className={`btn-lang admin-tab-btn ${activeTab === "users_list" ? "active-tab" : ""}`}
                 >
-                  📋 Listar Todos os Users
+                  📋 {t("admin_tab_list_users")}
                 </button>
               </div>
             )}
 
-            {userRole === "ADMIN" && activeTab === "users_list" ? (
-              <AdminDashboard onEditUser={handleEditUserClick} /> 
+            {userRole === "ADMIN" &&
+            activeTab === "users_list" ? (
+              <AdminDashboard
+                onEditUser={handleEditUserClick}
+              />
             ) : (
               <UserDashboard userId={editingUserId} />
             )}
@@ -151,10 +193,14 @@ export default function App() {
           <AuthForm
             isLogin={isLogin}
             setIsLogin={setIsLogin}
-            firstName={firstName} setFirstName={setFirstName}
-            lastName={lastName} setLastName={setLastName}
-            email={email} setEmail={setEmail}
-            password={password} setPassword={setPassword}
+            firstName={firstName}
+            setFirstName={setFirstName}
+            lastName={lastName}
+            setLastName={setLastName}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
             message={message}
             onSubmit={handleSubmit}
           />

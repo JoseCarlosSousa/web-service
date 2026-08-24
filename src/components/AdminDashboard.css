@@ -56,3 +56,20 @@
 .status-inactive {
   color: #e74c3c;
 }
+/* Botão de Ação Editar dentro da Tabela */
+.btn-table-edit {
+  padding: 5px 12px;
+  font-size: 12px;
+  border: 1px solid #2563eb;
+  color: #2563eb;
+  background-color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-table-edit:hover {
+  background-color: #2563eb;
+  color: white;
+}

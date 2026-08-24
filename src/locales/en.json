@@ -53,11 +53,14 @@
   "form_state": "State / Region",
   "form_zip_code": "ZIP / Postal Code",
   "form_country": "Country",
-  
+
   "gender_male": "Male",
   "gender_female": "Female",
   "gender_other": "Other",
-  "select_option": "Select"
+  "select_option": "Select",
 
+  "btn_logout": "Logout",
+  "btn_edit": "Edit",
+  "admin_tab_my_profile": "Edit My Profile",
+  "admin_tab_list_users": "List All Users"
 }
-

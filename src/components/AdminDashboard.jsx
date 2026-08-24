@@ -62,10 +62,9 @@ export default function AdminDashboard({ onEditUser }) {
                 <td className="admin-table-cell">
                   <button 
                     onClick={() => onEditUser(user.id)}
-                    className="btn-lang"
-                    style={{ padding: "5px 12px", fontSize: "12px", borderColor: "#2563eb", color: "#2563eb", background: "white" }}
+                    className="btn-table-edit"
                   >
-                    ✏️ Editar
+                    ✏️ {t("btn_edit")}
                   </button>
                 </td>
               </tr>

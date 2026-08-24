@@ -57,5 +57,10 @@
   "gender_male": "Männlich",
   "gender_female": "Weiblich",
   "gender_other": "Sonstiges",
-  "select_option": "Wählen"
+  "select_option": "Wählen",
+
+  "btn_logout": "Abmelden",
+  "btn_edit": "Bearbeiten",
+  "admin_tab_my_profile": "Meine Daten bearbeiten",
+  "admin_tab_list_users": "Alle Benutzer auflisten"
 }

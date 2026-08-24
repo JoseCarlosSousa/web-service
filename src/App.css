@@ -220,3 +220,23 @@ h2 {
   color: white !important;
   border-color: #2ecc71 !important;
 }
+
+/* Classes para o Menu de Abas do Administrador */
+.admin-menu-tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.admin-tab-btn {
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+/* Destaca o botão da aba que está selecionada */
+.admin-menu-tabs .active-tab {
+  background-color: #2ecc71 !important;
+  color: white !important;
+  border-color: #2ecc71 !important;
+}

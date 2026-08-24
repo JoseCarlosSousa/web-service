@@ -57,5 +57,10 @@
   "gender_male": "Masculino",
   "gender_female": "Feminino",
   "gender_other": "Outro",
-  "select_option": "Selecionar"
+  "select_option": "Selecionar",
+
+  "btn_logout": "Sair",
+  "btn_edit": "Editar",
+  "admin_tab_my_profile": "Editar Meus Dados",
+  "admin_tab_list_users": "Listar Todos os Users"
 }
