@@ -61,6 +61,7 @@
 
   "btn_logout": "Abmelden",
   "btn_edit": "Bearbeiten",
+  "btn_cancel": "Abbrechen",
   "admin_tab_my_profile": "Meine Daten bearbeiten",
   "admin_tab_list_users": "Alle Benutzer auflisten"
 }

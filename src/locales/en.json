@@ -61,6 +61,7 @@
 
   "btn_logout": "Logout",
   "btn_edit": "Edit",
+  "btn_cancel": "Cancel",
   "admin_tab_my_profile": "Edit My Profile",
   "admin_tab_list_users": "List All Users"
 }

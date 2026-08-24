@@ -61,6 +61,7 @@
 
   "btn_logout": "Sair",
   "btn_edit": "Editar",
+   "btn_cancel": "Cancelar",
   "admin_tab_my_profile": "Editar Meus Dados",
   "admin_tab_list_users": "Listar Todos os Users"
 }

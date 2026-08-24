@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+
 import "./UserDashboard.css";
 
 export default function UserDashboard({ userId }) {
@@ -18,20 +19,12 @@ export default function UserDashboard({ userId }) {
     zipCode: "",
     country: "",
   });
+
+  const [initialData, setInitialData] = useState({});
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
-  // Controla se o formulário está editável
   const [isEditing, setIsEditing] = useState(false);
-
-  const countryPrefixes = [
-    { code: "+351", name: "Portugal (+351)" },
-    { code: "+49", name: "Germany (+49)" },
-    { code: "+44", name: "United Kingdom (+44)" },
-    { code: "+34", name: "Spain (+34)" },
-    { code: "+33", name: "France (+33)" },
-    { code: "+39", name: "Italy (+39)" },
-  ];
 
   const baseUrl = import.meta.env.VITE_CUSTOMER_API_URL;
   const targetUrl = userId
@@ -58,7 +51,7 @@ export default function UserDashboard({ userId }) {
       })
       .then((data) => {
         if (data) {
-          setFormData({
+          const freshData = {
             email: data.email || "",
             firstName: data.firstName || "",
             lastName: data.lastName || "",
@@ -70,7 +63,9 @@ export default function UserDashboard({ userId }) {
             state: data.state || "",
             zipCode: data.zipCode || "",
             country: data.country || "",
-          });
+          };
+          setFormData(freshData);
+          setInitialData(freshData);
         }
         setLoading(false);
       })
@@ -83,6 +78,12 @@ export default function UserDashboard({ userId }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCancelClick = () => {
+    setFormData(initialData);
+    setIsEditing(false);
+    setMessage("");
   };
 
   const handleSubmit = async (e) => {
@@ -104,6 +105,7 @@ export default function UserDashboard({ userId }) {
 
       if (response.ok) {
         setMessage(t("profile_update_success"));
+        setInitialData(formData);
         setIsEditing(false);
       } else {
         setMessage(t("profile_update_error"));
@@ -127,7 +129,6 @@ export default function UserDashboard({ userId }) {
 
   return (
     <div className="user-profile-section">
-      {/* Contentor flexível para alinhar o Título e o Botão lado a lado */}
       <div className="profile-title-container">
         <h3 className="profile-title">
           👤{" "}
@@ -135,11 +136,13 @@ export default function UserDashboard({ userId }) {
             ? `${t("profile_title")} (ID: ${userId})`
             : t("profile_title")}
         </h3>
-
-        {/* Botão Dinâmico: Alterna classe e texto entre Editar e Cancelar */}
         <button
           type="button"
-          onClick={() => setIsEditing(!isEditing)}
+          onClick={
+            isEditing
+              ? handleCancelClick
+              : () => setIsEditing(true)
+          }
           className={
             isEditing
               ? "btn-table-cancel"
@@ -151,7 +154,6 @@ export default function UserDashboard({ userId }) {
             : `✏️ ${t("btn_edit") || "Editar"}`}
         </button>
       </div>
-
       <p className="profile-subtitle">
         {t("profile_subtitle")}
       </p>
@@ -164,7 +166,6 @@ export default function UserDashboard({ userId }) {
         onSubmit={handleSubmit}
         className="profile-form"
       >
-        {/* Nome e Apelido */}
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
@@ -195,8 +196,6 @@ export default function UserDashboard({ userId }) {
             />
           </div>
         </div>
-
-        {/* Email e Género */}
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
@@ -231,8 +230,6 @@ export default function UserDashboard({ userId }) {
             </select>
           </div>
         </div>
-
-        {/* Indicativo e Telefone */}
         <div className="form-row">
           <div className="form-field">
             <label className="form-label">
@@ -247,14 +244,11 @@ export default function UserDashboard({ userId }) {
               disabled={!isEditing}
             >
               <option value="">{t("select_option")}</option>
-              {countryPrefixes.map((prefix) => (
-                <option
-                  key={prefix.code}
-                  value={prefix.code}
-                >
-                  {prefix.name}
-                </option>
-              ))}
+            {COUNTRY_PREFIXES.map((prefix) => (
+              <option key={prefix.code} value={prefix.code}>
+                {prefix.name}
+              </option>
+            ))}
             </select>
           </div>
           <div className="form-field">
@@ -272,8 +266,6 @@ export default function UserDashboard({ userId }) {
             />
           </div>
         </div>
-
-        {/* Morada Completa */}
         <div className="form-field">
           <label className="form-label">
             {t("form_address")}
@@ -287,8 +279,6 @@ export default function UserDashboard({ userId }) {
             disabled={!isEditing}
           />
         </div>
-
-        {/* Cidade, Distrito e Código Postal */}
         <div className="form-row-triple">
           <div className="form-field">
             <label className="form-label">
@@ -330,8 +320,6 @@ export default function UserDashboard({ userId }) {
             />
           </div>
         </div>
-
-        {/* País */}
         <div className="form-field">
           <label className="form-label">
             {t("form_country")}
@@ -345,8 +333,6 @@ export default function UserDashboard({ userId }) {
             disabled={!isEditing}
           />
         </div>
-
-        {/* Botão Gravar: Corrigida a chave de tradução para bater certo com os seus ficheiros locales */}
         {isEditing && (
           <button type="submit" className="btn-save">
             {t("btn_save_changes") ||
