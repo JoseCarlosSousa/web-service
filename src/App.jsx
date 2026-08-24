@@ -3,10 +3,10 @@ import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { loginUser, registerUser } from "./api/authService";
 import DashboardCard from "./components/DashboardCard";
+import AdminDashboard from "./components/AdminDashboard"; // 🌟 Importe o seu componente de Admin aqui
 import AuthForm from "./components/AuthForm";
 import "./App.css";
 
-// 🌟 Atualizado: Agora recebe isLoggedIn e onLogout como propriedades
 function GlobalNavbar({ isLoggedIn, onLogout }) {
   const { i18n, t } = useTranslation();
 
@@ -14,80 +14,33 @@ function GlobalNavbar({ isLoggedIn, onLogout }) {
     i18n.changeLanguage(lng);
   };
 
-  const styles = {
-    nav: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: "15px 30px",
-      backgroundColor: "#ffffff",
-      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.06)",
-      fontFamily: "system-ui, -apple-system, sans-serif",
-      position: "sticky",
-      top: 0,
-      zIndex: 1000,
-    },
-    logo: {
-      fontWeight: "bold",
-      fontSize: "18px",
-      color: "#2ecc71",
-    },
-    langContainer: {
-      display: "flex",
-      alignItems: "center",
-      gap: "10px",
-    },
-    btn: {
-      padding: "6px 14px",
-      border: "1px solid #dee2e6",
-      borderRadius: "6px",
-      backgroundColor: "#f8f9fa",
-      cursor: "pointer",
-      fontWeight: "600",
-      fontSize: "13px",
-    },
-    btnLogout: {
-      padding: "6px 14px",
-      border: "none",
-      borderRadius: "6px",
-      backgroundColor: "#e74c3c",
-      color: "#ffffff",
-      cursor: "pointer",
-      fontWeight: "600",
-      fontSize: "13px",
-      marginLeft: "10px",
-      transition: "background-color 0.2s",
-    },
-  };
-
   return (
-    <nav style={styles.nav}>
-      <div style={styles.logo}>🚀 kkosmico App</div>
-      <div style={styles.langContainer}>
+    <nav className="global-nav">
+      <div className="nav-logo">🚀 kkosmico App</div>
+      <div className="nav-lang-container">
         <button
           onClick={() => changeLanguage("pt")}
-          style={styles.btn}
+          className="btn-lang"
         >
           🇵🇹 PT
         </button>
         <button
           onClick={() => changeLanguage("en")}
-          style={styles.btn}
+          className="btn-lang"
         >
           🇬🇧 EN
         </button>
         <button
           onClick={() => changeLanguage("de")}
-          style={styles.btn}
+          className="btn-lang"
         >
           🇩🇪 DE
         </button>
 
-        {/* 🌟 O botão de logout aparece aqui apenas se o utilizador estiver autenticado */}
         {isLoggedIn && (
           <button
             onClick={onLogout}
-            style={styles.btnLogout}
+            className="btn-logout-nav"
           >
             {t("btn_logout", "Logout")}
           </button>
@@ -106,6 +59,7 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [userName, setUserName] = useState("");
+  const [userRole, setUserRole] = useState(""); // 🌟 Novo estado para guardar o cargo (ADMIN, CUSTOMER, etc.)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -128,11 +82,16 @@ export default function App() {
           if (data.token) {
             localStorage.setItem("token", data.token);
             const decoded = jwtDecode(data.token);
+
+            // 🌟 Guarda o nome completo
             setUserName(
               (decoded.firstName || "") +
                 " " +
                 (decoded.lastName || ""),
             );
+
+            // 🌟 Guarda o Role vindo de dentro do Token (verifique se a chave no seu backend se chama 'role')
+            setUserRole(decoded.role || "USER");
           }
           setIsLoggedIn(true);
           clearFields();
@@ -159,6 +118,7 @@ export default function App() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
+    setUserRole(""); // 🌟 Limpa o role no logout
     setMessage("");
   };
 
@@ -169,9 +129,22 @@ export default function App() {
     setPassword("");
   }
 
+  // 🌟 Função auxiliar para decidir qual dashboard renderizar com base no Role
+  const renderDashboardBasedOnRole = () => {
+    if (userRole === "ADMIN") {
+      return <AdminDashboard onLogout={handleLogout} />;
+    }
+    // Caso contrário, vai para a view normal do utilizador/cliente
+    return (
+      <DashboardCard
+        userName={userName}
+        onLogout={handleLogout}
+      />
+    );
+  };
+
   return (
     <div className="app-container">
-      {/* 🌟 Passagem dos estados para controlo do botão dentro da Navbar */}
       <GlobalNavbar
         isLoggedIn={isLoggedIn}
         onLogout={handleLogout}
@@ -182,10 +155,8 @@ export default function App() {
         style={{ padding: "20px" }}
       >
         {isLoggedIn ? (
-          <DashboardCard
-            userName={userName}
-            onLogout={handleLogout}
-          />
+          /* 🌟 Agora chama a função que valida as permissões do Role */
+          renderDashboardBasedOnRole()
         ) : (
           <AuthForm
             isLogin={isLogin}
