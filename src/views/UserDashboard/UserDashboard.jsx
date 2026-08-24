@@ -21,6 +21,9 @@ export default function UserDashboard({ userId }) {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
 
+  // 🌟 NOVO ESTADO: Controla se o formulário está editável (começa em false)
+  const [isEditing, setIsEditing] = useState(false);
+
   const countryPrefixes = [
     { code: "+351", name: "Portugal (+351)" },
     { code: "+49", name: "Germany (+49)" },
@@ -30,7 +33,6 @@ export default function UserDashboard({ userId }) {
     { code: "+39", name: "Italy (+39)" },
   ];
 
-  // Define dinamicamente o URL da API com base no utilizador em edição
   const baseUrl = import.meta.env.VITE_CUSTOMER_API_URL;
   const targetUrl = userId
     ? `${baseUrl}/api/customers/${userId}`
@@ -39,6 +41,7 @@ export default function UserDashboard({ userId }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setLoading(true);
+    setIsEditing(false); // 🌟 Sempre que mudar de utilizador, volta ao modo leitura
 
     fetch(targetUrl, {
       method: "GET",
@@ -75,14 +78,11 @@ export default function UserDashboard({ userId }) {
         console.error("Failed to load profile data:", err);
         setLoading(false);
       });
-  }, [targetUrl]); // Recarrega sempre que o Admin muda o utilizador a editar
+  }, [targetUrl]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -104,6 +104,7 @@ export default function UserDashboard({ userId }) {
 
       if (response.ok) {
         setMessage(t("profile_update_success"));
+        setIsEditing(false); // 🌟 Bloqueia os campos novamente após gravar com sucesso
       } else {
         setMessage(t("profile_update_error"));
       }
@@ -117,7 +118,6 @@ export default function UserDashboard({ userId }) {
   };
 
   if (loading) {
-    // Usando a classe CSS em vez de style inline
     return (
       <p className="profile-loading">
         {t("loading_profile")}...
@@ -127,7 +127,6 @@ export default function UserDashboard({ userId }) {
 
   return (
     <div className="user-profile-section">
-      {/* Mostra um título diferente caso o Admin esteja a modificar uma conta externa */}
       <h3 className="profile-title">
         👤{" "}
         {userId
@@ -140,6 +139,29 @@ export default function UserDashboard({ userId }) {
 
       {message && (
         <div className="profile-message">{message}</div>
+      )}
+
+      {/* 🌟 BOTÃO DE ATIVAÇÃO: Se não estiver a editar, mostra botão para ativar o modo de edição */}
+      {!isEditing && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginBottom: "15px",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setIsEditing(true)}
+            className="btn-table-edit"
+            style={{
+              padding: "8px 16px",
+              fontSize: "14px",
+            }}
+          >
+            ✏️ {t("btn_edit") || "Editar Dados"}
+          </button>
+        </div>
       )}
 
       <form
@@ -159,6 +181,7 @@ export default function UserDashboard({ userId }) {
               onChange={handleChange}
               className="form-input"
               required
+              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
             />
           </div>
           <div className="form-field">
@@ -172,6 +195,7 @@ export default function UserDashboard({ userId }) {
               onChange={handleChange}
               className="form-input"
               required
+              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
             />
           </div>
         </div>
@@ -182,6 +206,7 @@ export default function UserDashboard({ userId }) {
             <label className="form-label">
               {t("form_email")}
             </label>
+            {/* O email fica sempre desativado por regra de negócio */}
             <input
               type="email"
               name="email"
@@ -199,6 +224,7 @@ export default function UserDashboard({ userId }) {
               value={formData.gender}
               onChange={handleChange}
               className="form-input"
+              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
             >
               <option value="">{t("select_option")}</option>
               <option value="MALE">
@@ -223,6 +249,7 @@ export default function UserDashboard({ userId }) {
               onChange={handleChange}
               className="form-input"
               required
+              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
             >
               <option value="">{t("select_option")}</option>
               {countryPrefixes.map((prefix) => (
@@ -246,6 +273,7 @@ export default function UserDashboard({ userId }) {
               onChange={handleChange}
               className="form-input"
               required
+              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
             />
           </div>
         </div>
@@ -261,6 +289,7 @@ export default function UserDashboard({ userId }) {
             value={formData.address}
             onChange={handleChange}
             className="form-input"
+            disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
           />
         </div>
 
@@ -276,6 +305,7 @@ export default function UserDashboard({ userId }) {
               value={formData.city}
               onChange={handleChange}
               className="form-input"
+              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
             />
           </div>
           <div className="form-field">
@@ -288,6 +318,7 @@ export default function UserDashboard({ userId }) {
               value={formData.state}
               onChange={handleChange}
               className="form-input"
+              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
             />
           </div>
           <div className="form-field">
@@ -300,6 +331,7 @@ export default function UserDashboard({ userId }) {
               value={formData.zipCode}
               onChange={handleChange}
               className="form-input"
+              disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
             />
           </div>
         </div>
@@ -315,13 +347,16 @@ export default function UserDashboard({ userId }) {
             value={formData.country}
             onChange={handleChange}
             className="form-input"
+            disabled={!isEditing} // 🌟 Bloqueado se isEditing for false
           />
         </div>
 
-        {/* Botão Salvar */}
-        <button type="submit" className="btn-save">
-          {t("btn_save") || "Salvar Alterações"}
-        </button>
+        {/* 🌟 BOTÃO GRAVAR: Só aparece na tela se o modo de edição estiver ativo */}
+        {isEditing && (
+          <button type="submit" className="btn-save">
+            {t("btn_save") || "Salvar Alterações"}
+          </button>
+        )}
       </form>
     </div>
   );
