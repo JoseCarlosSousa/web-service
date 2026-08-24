@@ -1,38 +1,48 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import UserDashboard from "./components/UserDashboard";
-import AdminDashboard from "./components/AdminDashboard";
 import "./Navbar.css";
 
-function Navbar() {
-  const { i18n } = useTranslation();
+// Alterado para export default para o App.jsx o conseguir importar facilmente
+export default function Navbar({ isLoggedIn, onLogout }) {
+  // 🌟 ADICIONADO O 't' AQUI PARA AS TRADUÇÕES FUNCIONAREM!
+  const { i18n, t } = useTranslation();
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
 
   return (
-    <nav className="nav-container">
-      <div className="nav-logo">🏍️ kkosmico App</div>
-      <div className="lang-container">
-        <button onClick={() => changeLanguage("pt")} className="lang-btn">🇵🇹 PT</button>
-        <button onClick={() => changeLanguage("en")} className="lang-btn">🇬🇧 EN</button>
-        <button onClick={() => changeLanguage("de")} className="lang-btn">🇩🇪 DE</button>
+    <nav className="global-nav">
+      <div className="nav-logo">🚀 kKósmico Apps</div>
+      <div className="nav-lang-container">
+        <button
+          onClick={() => changeLanguage("pt")}
+          className="btn-lang"
+        >
+          🇵🇹 PT
+        </button>
+        <button
+          onClick={() => changeLanguage("en")}
+          className="btn-lang"
+        >
+          🇬🇧 EN
+        </button>
+        <button
+          onClick={() => changeLanguage("de")}
+          className="btn-lang"
+        >
+          🇩🇪 DE
+        </button>
+
+        {/* O t("btn_logout") agora vai funcionar sem erros */}
+        {isLoggedIn && (
+          <button
+            onClick={onLogout}
+            className="btn-logout-nav"
+          >
+            {t("btn_logout", "Logout")}
+          </button>
+        )}
       </div>
     </nav>
-  );
-}
-
-export default function App() {
-  return (
-    <Router>
-      <Navbar /> 
-      <div style={{ padding: "20px" }}> {/* Podes manter este inline por ser apenas um espaçamento global rápido */}
-        <Routes>
-          <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-        </Routes>
-      </div>
-    </Router>
   );
 }

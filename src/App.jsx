@@ -7,50 +7,8 @@ import AdminDashboard from "./views/AdminDashboard/AdminDashboard";
 import AuthForm from "./components/AuthForm";
 import "./App.css";
 
-function GlobalNavbar({ isLoggedIn, onLogout }) {
-  const { i18n, t } = useTranslation();
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
-
-  return (
-    <nav className="global-nav">
-      <div className="nav-logo">🚀 kKósmico Apps</div>
-      <div className="nav-lang-container">
-        <button
-          onClick={() => changeLanguage("pt")}
-          className="btn-lang"
-        >
-          🇵🇹 PT
-        </button>
-        <button
-          onClick={() => changeLanguage("en")}
-          className="btn-lang"
-        >
-          🇬🇧 EN
-        </button>
-        <button
-          onClick={() => changeLanguage("de")}
-          className="btn-lang"
-        >
-          🇩🇪 DE
-        </button>
-
-        {isLoggedIn && (
-          <button
-            onClick={onLogout}
-            className="btn-logout-nav"
-          >
-            {t("btn_logout", "Logout")}
-          </button>
-        )}
-      </div>
-    </nav>
-  );
-}
-
 export default function App() {
+  const { t } = useTranslation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [firstName, setFirstName] = useState("");
