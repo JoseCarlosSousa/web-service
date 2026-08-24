@@ -23,7 +23,7 @@ export default function UserDashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:8094/api/customers/me", {
+    fetch(`${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +78,7 @@ export default function UserDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:8094/api/customers/me",
+        `${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`,
         {
           method: "PUT",
           headers: {
