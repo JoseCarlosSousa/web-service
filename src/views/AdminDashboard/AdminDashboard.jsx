@@ -1,117 +1,64 @@
 import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import AdminDashboardTable from "./AdminDashboardTable"; 
 
-export default function AdminDashboardTable({ users, onUpdateRole }) {
-  const { t } = useTranslation();
-  
-  const [editingRowId, setEditingRowId] = useState(null);
-  const [tempRole, setTempRole] = useState("");
+export default function AdminDashboard() {
+  const [users, setUsers] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  // Log de segurança para verificar o fluxo de dados na consola
   useEffect(() => {
-    console.log("Dados recebidos na tabela (users):", users);
-  }, [users]);
+    const token = localStorage.getItem("token");
 
-  const handleEditClick = (user) => {
-    setEditingRowId(user.id);
-    setTempRole(user.role);
-  };
+    fetch(`${API_URL}/api/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` 
+      }
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Erro no servidor: ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setUsers(data);
+        } else if (data && Array.isArray(data.content)) {
+          setUsers(data.content); 
+        }
+      })
+      .catch((err) => {
+        console.error("Erro ao listar utilizadores da API /api/users:", err);
+      });
+  }, [API_URL]);
 
-  const handleCancelClick = () => {
-    setEditingRowId(null);
-    setTempRole("");
-  };
+  const handleUpdateRole = async (userId, newRole) => {
+    try {
+      const token = localStorage.getItem("token");
 
-  const handleSaveClick = (userId) => {
-    onUpdateRole(userId, tempRole);
-    setEditingRowId(null);
+      const response = await fetch(`${API_URL}/api/users/${userId}/role`, {
+        method: "PUT", 
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ role: newRole })
+      });
+
+      if (response.ok) {
+        setUsers((prevUsers) =>
+          prevUsers.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
+        );
+      } else {
+        console.error("Não foi possível atualizar a Role no Spring Boot.");
+      }
+    } catch (error) {
+      console.error("Erro na ligação ao endpoint de atualização:", error);
+    }
   };
 
   return (
-    <div className="table-responsive-container">
-      <table className="admin-table">
-        <thead>
-          <tr className="admin-table-header-row">
-            <th className="admin-table-cell">{t("table_header_name")}</th>
-            <th className="admin-table-cell">{t("table_header_email")}</th>
-            <th className="admin-table-cell">{t("table_header_role")}</th>
-            <th className="admin-table-cell">{t("table_header_actions")}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(users) && users.length > 0 ? (
-            users.map((user) => {
-              if (!user) return null;
-              const isCurrentRowEditing = editingRowId === user.id;
-
-              return (
-                <tr key={user.id || Math.random()} className="admin-table-body-row">
-                  <td className="admin-table-cell">
-                    {user.firstName || ""} {user.lastName || ""}
-                  </td>
-                  <td className="admin-table-cell">
-                    {user.email || ""}
-                  </td>
-                  <td className="admin-table-cell">
-                    {isCurrentRowEditing ? (
-                      <select 
-                        value={tempRole} 
-                        onChange={(e) => setTempRole(e.target.value)}
-                        className="role-select"
-                      >
-                        <option value="USER">{t("role_user")}</option>
-                        <option value="ADMIN">{t("role_admin")}</option>
-                        <option value="MANAGER">{t("role_manager")}</option>
-                        <option value="EDITOR">{t("role_editor")}</option> 
-                      </select>
-                    ) : (
-                      <span className="badge-role">
-                        {user.role === "ADMIN" && t("role_admin")}
-                        {user.role === "MANAGER" && t("role_manager")}
-                        {user.role === "USER" && t("role_user")}
-                        {user.role === "EDITOR" && t("role_editor")}
-                      </span>
-                    )}
-                  </td>
-                  <td className="admin-table-cell">
-                    {isCurrentRowEditing ? (
-                      <div className="action-buttons-row">
-                        <button 
-                          onClick={() => handleSaveClick(user.id)} 
-                          className="btn-table-edit"
-                          title={t("btn_save")}
-                        >
-                          💾 {t("btn_save")}
-                        </button>
-                        <button 
-                          onClick={handleCancelClick} 
-                          className="btn-table-edit"
-                          title={t("btn_cancel")}
-                        >
-                          ❌ {t("btn_cancel")}
-                        </button>
-                      </div>
-                    ) : (
-                      <button 
-                        onClick={() => handleEditClick(user)} 
-                        className="btn-table-edit"
-                      >
-                        ✏️ {t("btn_edit")}
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <tr>
-              <td colSpan="4" className="admin-table-cell" style={{ textAlign: "center", padding: "30px" }}>
-                {t("loading_users") || "A carregar utilizadores..."}
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+    <div className="admin-dashboard-view">
+      <AdminDashboardTable users={users} onUpdateRole={handleUpdateRole} />
     </div>
   );
 }

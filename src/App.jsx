@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { loginUser, registerUser } from "./api/authService";
 import UserDashboard from "./views/UserDashboard/UserDashboard";
-import AdminDashboard from "./views/AdminDashboard/AdminDashboard";
+import AdminDashboardTable from "./views/AdminDashboard/AdminDashboardTable";
 import GlobalNavbar from "./components/Navbar/Navbar";
 import AuthForm from "./components/AuthForm";
 import "./App.css";
@@ -20,7 +20,6 @@ export default function App() {
   const [userName, setUserName] = useState("");
   const [userRole, setUserRole] = useState("");
 
-  // Controlo de navegação para o ADMIN
   const [activeTab, setActiveTab] = useState("profile");
   const [editingUserId, setEditingUserId] = useState(null);
 
@@ -93,19 +92,40 @@ export default function App() {
     setPassword("");
   }
 
-  // Função chamada ao clicar em Editar na tabela de utilizadores
   const handleEditUserClick = (userId) => {
     setEditingUserId(userId);
     setActiveTab("profile");
   };
 
-  // Garante a limpeza do ID se o Admin quiser voltar ao seu próprio perfil
   const handleTabChange = (tabName) => {
     if (tabName === "profile") {
       setEditingUserId(null);
     }
     setActiveTab(tabName);
   };
+
+  const handleUpdateRole = async (userId, newRole) => {
+  try {
+    const token = localStorage.getItem("token");
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    const response = await fetch(`${API_URL}/api/users/${userId}`, {
+      method: "PATCH", // ou PUT, dependendo da sua API
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ role: newRole })
+    });
+
+    if (response.ok) {
+      // Atualize o seu estado local de utilizadores aqui se necessário
+      setMessage("Função atualizada com sucesso!");
+    }
+  } catch (error) {
+    console.error("Erro ao atualizar role:", error);
+  }
+};
 
   return (
     <div className="app-container">
@@ -141,7 +161,7 @@ export default function App() {
 
             {userRole === "ADMIN" &&
             activeTab === "users_list" ? (
-              <AdminDashboard
+              <AdminDashboardTable
                 onEditUser={handleEditUserClick}
               />
             ) : (
