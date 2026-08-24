@@ -2,8 +2,8 @@ import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useTranslation } from "react-i18next";
 import { loginUser, registerUser } from "./api/authService";
-import UserDashboard from "./components/UserDashboard";
-import AdminDashboard from "./components/AdminDashboard";
+import UserDashboard from "./views/UserDashboard/UserDashboard";
+import AdminDashboard from "./views/AdminDashboard/AdminDashboard";
 import AuthForm from "./components/AuthForm";
 import "./App.css";
 
