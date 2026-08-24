@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import ProfileForm from "./ProfileForm";
 import "./UserDashboard.css";
 
-export default function UserDashboard() {
+export default function UserDashboard({ userId }) {
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
+
   const [formData, setFormData] = useState({
     email: "",
     firstName: "",
@@ -20,24 +18,41 @@ export default function UserDashboard() {
     zipCode: "",
     country: "",
   });
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
+
+  const countryPrefixes = [
+    { code: "+351", name: "Portugal (+351)" },
+    { code: "+49", name: "Germany (+49)" },
+    { code: "+44", name: "United Kingdom (+44)" },
+    { code: "+34", name: "Spain (+34)" },
+    { code: "+33", name: "France (+33)" },
+    { code: "+39", name: "Italy (+39)" },
+  ];
+
+  // Determinar o URL correto com base na existência do userId
+  const baseUrl = import.meta.env.VITE_CUSTOMER_API_URL;
+  const targetUrl = userId
+    ? `${baseUrl}/api/customers/${userId}`
+    : `${baseUrl}/api/customers/me`;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    fetch(
-      `${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token && {
-            Authorization: `Bearer ${token}`,
-          }),
-        },
+    setLoading(true);
+
+    fetch(targetUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
       },
-    )
-      .then((res) =>
-        res.ok ? res.json() : Promise.reject(),
-      )
+    })
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error(
+          `Server responded with status ${res.status}`,
+        );
+      })
       .then((data) => {
         if (data) {
           setFormData({
@@ -57,13 +72,10 @@ export default function UserDashboard() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error(
-          "Failed to load authenticated profile data:",
-          err,
-        );
+        console.error("Failed to load profile data:", err);
         setLoading(false);
       });
-  }, []);
+  }, [targetUrl]); // Recarrega sempre que o URL mudar (ex: ao clicar num utilizador diferente)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,27 +85,25 @@ export default function UserDashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${import.meta.env.VITE_CUSTOMER_API_URL}/api/customers/me`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && {
-              Authorization: `Bearer ${token}`,
-            }),
-          },
-          body: JSON.stringify(formData),
+      const response = await fetch(targetUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token && {
+            Authorization: `Bearer ${token}`,
+          }),
         },
-      );
+        body: JSON.stringify(formData),
+      });
 
-      setMessage(
-        response.ok
-          ? t("profile_update_success")
-          : t("profile_update_error"),
-      );
+      if (response.ok) {
+        setMessage(t("profile_update_success"));
+      } else {
+        setMessage(t("profile_update_error"));
+      }
     } catch (error) {
       console.error(
         "Error submitting profile update:",
@@ -114,20 +124,193 @@ export default function UserDashboard() {
   return (
     <div className="user-profile-section">
       <h3 className="profile-title">
-        👤 {t("profile_title")}
+        👤{" "}
+        {userId
+          ? `${t("profile_title")} (Editando ID: ${userId})`
+          : t("profile_title")}
       </h3>
       <p className="profile-subtitle">
         {t("profile_subtitle")}
       </p>
+
       {message && (
         <div className="profile-message">{message}</div>
       )}
 
-      <ProfileForm
-        formData={formData}
-        onChange={handleChange}
+      <form
         onSubmit={handleSubmit}
-      />
+        className="profile-form"
+      >
+        <div className="form-row">
+          <div className="form-field">
+            <label className="form-label">
+              {t("form_first_name")}
+            </label>
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+          </div>
+          <div className="form-field">
+            <label className="form-label">
+              {t("form_last_name")}
+            </label>
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-field">
+            <label className="form-label">
+              {t("form_email")}
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              disabled
+              className="form-input"
+            />
+          </div>
+          <div className="form-field">
+            <label className="form-label">
+              {t("form_gender")}
+            </label>
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              className="form-input"
+            >
+              <option value="">{t("select_option")}</option>
+              <option value="MALE">
+                {t("gender_male")}
+              </option>
+              <option value="FEMALE">
+                {t("gender_female")}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div className="form-row">
+          <div className="form-field">
+            <label className="form-label">
+              {t("form_phone_prefix")}
+            </label>
+            <select
+              name="phonePrefix"
+              value={formData.phonePrefix}
+              onChange={handleChange}
+              className="form-input"
+              required
+            >
+              <option value="">{t("select_option")}</option>
+              {countryPrefixes.map((prefix) => (
+                <option
+                  key={prefix.code}
+                  value={prefix.code}
+                >
+                  {prefix.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-field">
+            <label className="form-label">
+              {t("form_phone_number")}
+            </label>
+            <input
+              type="text"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              className="form-input"
+              required
+            />
+          </div>
+        </div>
+
+        <div className="form-field">
+          <label className="form-label">
+            {t("form_address")}
+          </label>
+          <input
+            type="text"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            className="form-input"
+          />
+        </div>
+
+        <div className="form-row-triple">
+          <div className="form-field">
+            <label className="form-label">
+              {t("form_city")}
+            </label>
+            <input
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-field">
+            <label className="form-label">
+              {t("form_state")}
+            </label>
+            <input
+              type="text"
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+          <div className="form-field">
+            <label className="form-label">
+              {t("form_zip_code")}
+            </label>
+            <input
+              type="text"
+              name="zipCode"
+              value={formData.zipCode}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </div>
+        </div>
+
+        <div className="form-field">
+          <label className="form-label">
+            {t("form_country")}
+          </label>
+          <input
+            type="text"
+            name="country"
+            value={formData.country}
+            onChange={handleChange}
+            className="form-input"
+          />
+        </div>
+
+        <button type="submit" className="btn-save">
+          {t("btn_save") || "Salvar Alterações"}
+        </button>
+      </form>
     </div>
   );
 }
