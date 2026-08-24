@@ -34,22 +34,31 @@ export default function UserDashboard({ userId }) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    
+    if (!token) {
+      console.error("Autenticação em falta! Nenhum token encontrado no localStorage.");
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setIsEditing(false);
 
     fetch(targetUrl, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
-        ...(token && { Authorization: `Bearer ${token}` }),
+        "Content-Type": "application/json", "Authorization": `Bearer ${token}`,
       },
     })
-      .then((res) => {
-        if (res.ok) return res.json();
-        throw new Error(
-          `Server responded with status ${res.status}`,
-        );
-      })
+    .then((res) => {
+      if (res.status === 403) {
+        throw new Error("Erro 403: O seu utilizador não tem permissão (Admin) para ver este perfil.");
+      }
+      if (res.status === 401) {
+        throw new Error("Erro 401: Token inválido ou expirado. Faça login novamente.");
+      }
+      if (res.ok) return res.json();
+      throw new Error(`Server responded with status ${res.status}`);
+    })
       .then((data) => {
         if (data) {
           const freshData = {
@@ -64,17 +73,18 @@ export default function UserDashboard({ userId }) {
             state: data.state || "",
             zipCode: data.zipCode || "",
             country: data.country || "",
-          };
-          setFormData(freshData);
-          setInitialData(freshData);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to load profile data:", err);
-        setLoading(false);
-      });
-  }, [targetUrl]);
+        };
+        setFormData(freshData);
+        setInitialData(freshData);
+      }
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Failed to load profile data:", err.message);
+      setMessage(`Erro ao carregar dados: ${err.message}`);
+      setLoading(false);
+    });
+}, [targetUrl]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -247,7 +257,7 @@ export default function UserDashboard({ userId }) {
               <option value="">{t("select_option")}</option>
             {COUNTRY_PREFIXES.map((prefix) => (
               <option key={prefix.code} value={prefix.code}>
-                {prefix.name}
+                {t(prefix.nameKey)} ({prefix.code})
               </option>
             ))}
             </select>

@@ -63,5 +63,12 @@
   "btn_edit": "Bearbeiten",
   "btn_cancel": "Abbrechen",
   "admin_tab_my_profile": "Meine Daten bearbeiten",
-  "admin_tab_list_users": "Alle Benutzer auflisten"
+  "admin_tab_list_users": "Alle Benutzer auflisten",
+
+  "country_pt":"Portugal (+351)",
+  "country_de":"Deutschland (+49)",
+  "country_uk":"Vereinigtes Königreich (+44)",
+  "country_es":"Spanien (+34)",
+  "country_fr":"Frankreich (+33)",
+  "country_it":"Italien (+39)"
 }

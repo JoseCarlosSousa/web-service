@@ -63,5 +63,12 @@
   "btn_edit": "Edit",
   "btn_cancel": "Cancel",
   "admin_tab_my_profile": "Edit My Profile",
-  "admin_tab_list_users": "List All Users"
+  "admin_tab_list_users": "List All Users",
+
+  "country_pt":"Portugal (+351)",
+  "country_de":"Germany (+49)",
+  "country_uk":"United Kingdom (+44)",
+  "country_es":"Spain (+34)",
+  "country_fr":"France (+33)",
+  "country_it":"Italy (+39)"
 }
