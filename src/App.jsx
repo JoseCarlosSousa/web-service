@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { loginUser, registerUser } from "./api/authService";
 import UserDashboard from "./views/UserDashboard/UserDashboard";
 import AdminDashboard from "./views/AdminDashboard/AdminDashboard";
+import GlobalNavbar from "./components/Navbar/Navbar";
 import AuthForm from "./components/AuthForm";
 import "./App.css";
 
