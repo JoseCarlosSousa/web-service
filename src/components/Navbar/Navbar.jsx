@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { AVAILABLE_LANGUAGES } from "../constants/countries";
+import { AVAILABLE_LANGUAGES } from "../../constants/countries";
 import "./Navbar.css";
 
 export default function Navbar({ isLoggedIn, onLogout }) {

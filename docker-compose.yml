@@ -6,6 +6,8 @@ services:
       # 🌟 ADD THIS BLOCK: Tell the Dockerfile to use the development env file
       args:
         - VITE_MODE=production
+        - VITE_API_URL=http://localhost:8090
+        - VITE_CUSTOMER_API_URL=http://localhost:8094
     container_name: web-service
     ports:
       - "80:8080"
